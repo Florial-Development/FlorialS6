@@ -19,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import species.speciesinternal.SpeciesWrapper;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Getter
 public final class Florial extends JavaPlugin {
@@ -28,6 +30,10 @@ public final class Florial extends JavaPlugin {
     private static Florial instance;
 
     private FlorialDatabase database;
+
+    public HashMap<UUID, Integer> species = new HashMap<>();
+    //set on join
+    //remove on leave
 
 
     final FileConfiguration config2 = this.getConfig();
@@ -63,6 +69,7 @@ public final class Florial extends JavaPlugin {
     @Override
     public void onDisable() {
         //if (!(Cooldown.getCooldownMap("powercooldown1") == null)) Cooldown.getCooldownMap("powercooldown1").clear();
+        this.database.closeConnection();
         saveConfig();
     }
 

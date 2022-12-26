@@ -27,14 +27,10 @@ public class SpeciesWrapper {
 
     // Method to set the species of a player
     public void setSpecies(UUID player, int species) throws SQLException {
-        PlayerData data = plugin.getDatabase().findPlayerStatsbyUUID(player.toString());
-        if (data == null){
-            data = new PlayerData(player.toString(), species, 0);
-            plugin.getDatabase().createPlayerStats(data);
-        } else {
-            data.setSpecies(species);
-            plugin.getDatabase().updatePlayerStats(data);
-        }
+        PlayerData data = plugin.getDatabase().getPlayerStatsfromDatabase(player);
+        data.setSpecies(species);
+
+        plugin.getDatabase().updatePlayerStats(data);
     }
 
     // Method to get the species of a player

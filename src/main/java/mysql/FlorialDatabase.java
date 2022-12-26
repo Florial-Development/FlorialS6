@@ -1,8 +1,10 @@
 package mysql;
 
 import core.Florial;
+import org.bukkit.entity.Player;
 
 import java.sql.*;
+import java.util.UUID;
 
 public class FlorialDatabase {
 
@@ -83,5 +85,34 @@ public class FlorialDatabase {
 
         statement.close();
 
+    }
+
+    public PlayerData getPlayerStatsfromDatabase(UUID u) throws SQLException{
+
+        PlayerData data = plugin.getDatabase().findPlayerStatsbyUUID(u.toString());
+        if (data == null){
+            data = new PlayerData(u.toString(), 0, 0);
+            plugin.getDatabase().createPlayerStats(data);
+            return data;
+        } else {
+            return data;
+        }
+
+
+    }
+
+    public void deletePlayerStats(String u) throws SQLException {
+        PreparedStatement statement = getConnection().prepareStatement("DELETE FROM florial_players WHERE uuid = ?");
+        statement.setString(1, u);
+    }
+
+    public void closeConnection(){
+        try{
+            if (this.connection != null) {
+                this.connection().close();
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 }
