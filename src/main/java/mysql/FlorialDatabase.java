@@ -2,10 +2,7 @@ package mysql;
 
 import core.Florial;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class FlorialDatabase {
 
@@ -37,6 +34,54 @@ public class FlorialDatabase {
         statement.execute(sql);
 
         System.out.println("Created table!");
+
+    }
+
+    public PlayerData findPlayerStatsbyUUID(String u) throws SQLException {
+
+        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM florial_players WHERE uuid = ?");
+        statement.setString(1, u);
+        ResultSet results = statement.executeQuery();
+        if (results.next()){
+
+            int species = results.getInt("species");
+            int dna = results.getInt("dna");
+
+            PlayerData playerData = new PlayerData(u, species, dna);
+
+            statement.close();
+            return playerData;
+        }
+        statement.close();
+        return null;
+    }
+
+
+    public void createPlayerStats(PlayerData data) throws SQLException{
+
+        PreparedStatement statement = getConnection().prepareStatement("INSERT INTO florial_players(uuid, species, dna) VALUES (?, ?, ?)");
+
+        statement.setString(1, data.getUuid());
+        statement.setInt(2, data.getSpecies());
+        statement.setInt(3, data.getDna());
+
+        statement.executeUpdate();
+
+        statement.close();
+
+    }
+
+    public void updatePlayerStats(PlayerData data) throws SQLException{
+
+        PreparedStatement statement = getConnection().prepareStatement("UPDATE florial_players SET species = ?, dna = ? WHERE uuid = ?");
+
+        statement.setInt(1, data.getSpecies());
+        statement.setInt(2, data.getDna());
+        statement.setString(3, data.getUuid());
+
+        statement.executeUpdate();
+
+        statement.close();
 
     }
 }

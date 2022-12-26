@@ -1,8 +1,10 @@
 core\Florial.class
-species\Human.class
-species\speciesinternal\SpeciesWrapper.class
-mysql\FlorialDatabase.class
 species\Fox.class
-species\Cat.class
 mysql\PlayerData.class
+species\Human.class
+commands\ChangeSpecies.class
+species\speciesinternal\SpeciesWrapper.class
+commands\SpeciesCheckCommand.class
+mysql\FlorialDatabase.class
+species\Cat.class
 species\speciesinternal\Species.class

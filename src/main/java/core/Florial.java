@@ -1,6 +1,8 @@
 package core;
 
 import co.aikar.commands.PaperCommandManager;
+import commands.ChangeSpecies;
+import commands.SpeciesCheckCommand;
 import io.github.nosequel.menu.MenuHandler;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+import species.speciesinternal.SpeciesWrapper;
 
 import java.sql.SQLException;
 
@@ -23,6 +26,8 @@ public final class Florial extends JavaPlugin {
 
     @Getter
     private static Florial instance;
+
+    private FlorialDatabase database;
 
 
     final FileConfiguration config2 = this.getConfig();
@@ -38,10 +43,12 @@ public final class Florial extends JavaPlugin {
         new MenuHandler(this);
         enableRecipes();
         setupManagers();
+        new SpeciesWrapper(this);
+
 
         try{
-            FlorialDatabase db = new FlorialDatabase(this);
-            db.initializeDatabase();
+            this.database = new FlorialDatabase(this);
+            database.initializeDatabase();
         } catch (SQLException e){
             System.out.println("Unable to load database, connect, or create tables");
             e.printStackTrace();
@@ -129,8 +136,18 @@ public final class Florial extends JavaPlugin {
     public void updateScoreBoards() {
     }
 
+    public FlorialDatabase getDatabase(){
+        return database;
+    }
+
     private void setupCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
+        manager.registerCommand(new SpeciesCheckCommand(this));
+        manager.registerCommand(new ChangeSpecies(this));
 
+    }
+
+    public Florial getInstance(){
+        return instance;
     }
 }
