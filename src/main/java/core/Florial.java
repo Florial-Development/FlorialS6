@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import io.github.nosequel.menu.MenuHandler;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import mysql.FlorialDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,6 +14,8 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.SQLException;
 
 @Getter
 public final class Florial extends JavaPlugin {
@@ -35,6 +38,15 @@ public final class Florial extends JavaPlugin {
         new MenuHandler(this);
         enableRecipes();
         setupManagers();
+
+        try{
+            FlorialDatabase db = new FlorialDatabase(this);
+            db.initializeDatabase();
+        } catch (SQLException e){
+            System.out.println("Unable to load database, connect, or create tables");
+            e.printStackTrace();
+
+        }
 
         // test
 
