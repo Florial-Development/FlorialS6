@@ -19,8 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import species.speciesinternal.SpeciesWrapper;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public final class Florial extends JavaPlugin {
@@ -82,61 +81,37 @@ public final class Florial extends JavaPlugin {
     }
 
     private void enableRecipes() {
+        ArrayList<ItemStack> ritems;
+        registerRecipes("cheat_apple", true, "121", "   ", "   ", ritems = new ArrayList<>(Arrays.asList(
+                new ItemStack(Material.APPLE),
+        new ItemStack(Material.GOLD_BLOCK),
+        null, null, null, null, null, null, null)), new ItemStack(Material.GOLDEN_APPLE));
     }
 
-    private void registerRecipes(String thekey, Boolean isShaped, String column1, String column2, String column3,
-                                 ItemStack recipeitem1, ItemStack recipeitem2, ItemStack recipeitem3, ItemStack recipeitem4,
-                                 ItemStack recipeitem5, ItemStack recipeitem6, ItemStack recipeitem7, ItemStack recipeitem8, ItemStack recipeitem9, ItemStack output) {
+    private void registerRecipes(String thekey, Boolean isShaped, String column1, String column2, String column3, ArrayList<ItemStack> ritems, ItemStack output) {
         NamespacedKey key = new NamespacedKey(this, thekey);
         ShapelessRecipe therecipe = new ShapelessRecipe(key, output);
         ShapedRecipe therecipe2 = new ShapedRecipe(key, output);
-        if (isShaped == true) {
-            therecipe2.shape(column1, column2, column3);
-            if (!(recipeitem1.getType() == Material.AIR))
-                therecipe2.setIngredient('1', new RecipeChoice.ExactChoice(recipeitem1));
-            if (!(recipeitem2.getType() == Material.AIR))
-                therecipe2.setIngredient('2', new RecipeChoice.ExactChoice(recipeitem2));
-            if (!(recipeitem3.getType() == Material.AIR))
-                therecipe2.setIngredient('3', new RecipeChoice.ExactChoice(recipeitem3));
-            if (!(recipeitem4.getType() == Material.AIR))
-                therecipe2.setIngredient('4', new RecipeChoice.ExactChoice(recipeitem4));
-            if (!(recipeitem5.getType() == Material.AIR))
-                therecipe2.setIngredient('5', new RecipeChoice.ExactChoice(recipeitem5));
-            if (!(recipeitem6.getType() == Material.AIR))
-                therecipe2.setIngredient('6', new RecipeChoice.ExactChoice(recipeitem6));
-            if (!(recipeitem7.getType() == Material.AIR))
-                therecipe2.setIngredient('7', new RecipeChoice.ExactChoice(recipeitem7));
-            if (!(recipeitem8.getType() == Material.AIR))
-                therecipe2.setIngredient('8', new RecipeChoice.ExactChoice(recipeitem8));
-            if (!(recipeitem9.getType() == Material.AIR))
-                therecipe2.setIngredient('9', new RecipeChoice.ExactChoice(recipeitem9));
-            Bukkit.removeRecipe(key);
-            Bukkit.addRecipe(therecipe2);
-            return;
-        } else {
-            if (!(recipeitem1.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem1));
-            if (!(recipeitem2.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem2));
-            if (!(recipeitem3.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem3));
-            if (!(recipeitem4.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem4));
-            if (!(recipeitem5.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem5));
-            if (!(recipeitem6.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem6));
-            if (!(recipeitem7.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem7));
-            if (!(recipeitem8.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem8));
-            if (!(recipeitem9.getType() == Material.AIR))
-                therecipe.addIngredient(new RecipeChoice.ExactChoice(recipeitem9));
-            Bukkit.removeRecipe(key);
-            Bukkit.addRecipe(therecipe);
-            return;
+        if (isShaped) therecipe2.shape(column1, column2, column3);
+        Iterator i = ritems.iterator();
+        int itemindex = 1;
+        while (i.hasNext()) {
+            if (itemindex == 9) break;
+            if (isShaped) {
+                if (itemindex == 1) {
+                    therecipe2.setIngredient(Character.forDigit(1, 10), new RecipeChoice.ExactChoice(ritems.get(0)));
+                } else {
+                    if (ritems.get(itemindex - 1) != null) therecipe2.setIngredient(Character.forDigit(itemindex, 10), new RecipeChoice.ExactChoice(ritems.get(itemindex - 1)));
+                }
+            } else {
+                if (ritems.get(itemindex) != null)
+                    therecipe.addIngredient(new RecipeChoice.ExactChoice(ritems.get(itemindex)));
+            }
+            itemindex++;
         }
-        //test
+        Bukkit.removeRecipe(key);
+        Bukkit.addRecipe(therecipe2);
+        if (!(isShaped)) Bukkit.addRecipe(therecipe2);
     }
 
 

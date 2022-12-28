@@ -109,7 +109,7 @@ public class FlorialDatabase {
     public void closeConnection(){
         try{
             if (this.connection != null) {
-                this.connection().close();
+                this.connection.close();
             }
         } catch(SQLException e){
             e.printStackTrace();
