@@ -104,8 +104,8 @@ public final class Florial extends JavaPlugin {
                     if (ritems.get(itemindex - 1) != null) therecipe2.setIngredient(Character.forDigit(itemindex, 10), new RecipeChoice.ExactChoice(ritems.get(itemindex - 1)));
                 }
             } else {
-                if (ritems.get(itemindex) != null)
-                    therecipe.addIngredient(new RecipeChoice.ExactChoice(ritems.get(itemindex)));
+                if (ritems.get(itemindex-1) != null)
+                    therecipe.addIngredient(new RecipeChoice.ExactChoice(ritems.get(itemindex-1)));
             }
             itemindex++;
         }
