@@ -95,11 +95,16 @@ public final class Florial extends JavaPlugin {
         if (isShaped) therecipe2.shape(column1, column2, column3);
         Iterator i = ritems.iterator();
         int itemindex = 1;
+
         while (i.hasNext()) {
+
             if (itemindex == 9) break;
+
             if (isShaped) {
+
                 if (itemindex == 1) {
                     therecipe2.setIngredient(Character.forDigit(1, 10), new RecipeChoice.ExactChoice(ritems.get(0)));
+
                 } else {
                     if (ritems.get(itemindex - 1) != null) therecipe2.setIngredient(Character.forDigit(itemindex, 10), new RecipeChoice.ExactChoice(ritems.get(itemindex - 1)));
                 }
@@ -109,9 +114,13 @@ public final class Florial extends JavaPlugin {
             }
             itemindex++;
         }
+
         Bukkit.removeRecipe(key);
-        Bukkit.addRecipe(therecipe2);
-        if (!(isShaped)) Bukkit.addRecipe(therecipe2);
+        if (!(isShaped)) {
+            Bukkit.addRecipe(therecipe);
+        } else {
+            Bukkit.addRecipe(therecipe2);
+        }
     }
 
 
