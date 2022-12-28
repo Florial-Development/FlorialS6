@@ -11,10 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import species.speciesinternal.SpeciesWrapper;
 
@@ -81,46 +78,33 @@ public final class Florial extends JavaPlugin {
     }
 
     private void enableRecipes() {
-        ArrayList<ItemStack> ritems;
-        registerRecipes("cheat_apple", true, "121", "   ", "   ", ritems = new ArrayList<>(Arrays.asList(
+        List<ItemStack> ritems;
+        registerRecipes("cheat_apple", true, "121", "   ", "   ", ritems = Arrays.asList(
                 new ItemStack(Material.APPLE),
-        new ItemStack(Material.GOLD_BLOCK),
-        null, null, null, null, null, null, null)), new ItemStack(Material.GOLDEN_APPLE));
+                new ItemStack(Material.GOLD_BLOCK),
+                null, null, null, null, null, null, null), new ItemStack(Material.GOLDEN_APPLE));
     }
+    private void registerRecipes(String key, Boolean isShaped, String column1, String column2, String column3, List<ItemStack> ritems, ItemStack output) {
+        Recipe recipe = isShaped ? new ShapedRecipe(NamespacedKey.minecraft(key),output) : new ShapelessRecipe(
+                NamespacedKey.minecraft(key),output);
+        if (recipe instanceof ShapedRecipe shapedRecipe) {
+            shapedRecipe.shape(column1, column2, column3);
+            for (int i = 0; i < ritems.size(); i++) {
 
-    private void registerRecipes(String thekey, Boolean isShaped, String column1, String column2, String column3, ArrayList<ItemStack> ritems, ItemStack output) {
-        NamespacedKey key = new NamespacedKey(this, thekey);
-        ShapelessRecipe therecipe = new ShapelessRecipe(key, output);
-        ShapedRecipe therecipe2 = new ShapedRecipe(key, output);
-        if (isShaped) therecipe2.shape(column1, column2, column3);
-        Iterator i = ritems.iterator();
-        int itemindex = 1;
+                if (i >= 9) break;
 
-        while (i.hasNext()) {
+                ItemStack itemStack = ritems.get(i);
 
-            if (itemindex == 9) break;
-
-            if (isShaped) {
-
-                if (itemindex == 1) {
-                    therecipe2.setIngredient(Character.forDigit(1, 10), new RecipeChoice.ExactChoice(ritems.get(0)));
-
-                } else {
-                    if (ritems.get(itemindex - 1) != null) therecipe2.setIngredient(Character.forDigit(itemindex, 10), new RecipeChoice.ExactChoice(ritems.get(itemindex - 1)));
-                }
-            } else {
-                if (ritems.get(itemindex-1) != null)
-                    therecipe.addIngredient(new RecipeChoice.ExactChoice(ritems.get(itemindex-1)));
+                if (itemStack != null)
+                    shapedRecipe.setIngredient(Character.forDigit(i+1,10), new RecipeChoice.ExactChoice(itemStack) );
             }
-            itemindex++;
+        } else if (recipe instanceof ShapelessRecipe shapelessRecipe) {
+            ritems.forEach((itemStack) ->
+                    shapelessRecipe.addIngredient(new RecipeChoice.ExactChoice(itemStack)));
         }
 
-        Bukkit.removeRecipe(key);
-        if (!(isShaped)) {
-            Bukkit.addRecipe(therecipe);
-        } else {
-            Bukkit.addRecipe(therecipe2);
-        }
+        Bukkit.addRecipe(recipe);
+
     }
 
 
