@@ -2,6 +2,7 @@ package species.speciesinternal;
 
 import core.Florial;
 import mysql.PlayerData;
+import org.bukkit.entity.Player;
 import species.Cat;
 import species.Fox;
 import species.Human;
@@ -27,8 +28,8 @@ public class SpeciesWrapper {
         this.plugin = plugin;
     }
 
-    //public SpeciesWrapper() {;
-    //}
+    public SpeciesWrapper() {;
+    }
 
     // Method to set the species of a player
     public void setSpecies(UUID player, int species) throws SQLException {
@@ -44,7 +45,11 @@ public class SpeciesWrapper {
         Integer type =  data.getSpecies();
         if (obj == true) return type.toString();
         return SPECIES_NAMES[type];
+    }
 
+    public String getSpeciesName(Player p) {
+
+        return null;
     }
 
     public Species getSpeciesObject(UUID player) throws SQLException {

@@ -27,10 +27,11 @@ public final class Florial extends JavaPlugin {
 
     private FlorialDatabase database;
 
-    public HashMap<UUID, Integer> species = new HashMap<>();
     //set on join
     //remove on leave
 
+    public HashMap<UUID, Integer> species = new HashMap<>();
+    public HashMap<UUID, Integer> dna = new HashMap<>();
 
     final FileConfiguration config2 = this.getConfig();
 
