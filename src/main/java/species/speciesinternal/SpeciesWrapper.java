@@ -18,6 +18,11 @@ public class SpeciesWrapper {
     public static final int CAT = 1;
     public static final int FOX = 2;
 
+    public static final String[] SPECIES_NAMES = {
+            "human",
+            "cat",
+            "fox"};
+
     public SpeciesWrapper(Florial plugin) {
         this.plugin = plugin;
     }
@@ -38,15 +43,8 @@ public class SpeciesWrapper {
         PlayerData data = plugin.getDatabase().findPlayerStatsbyUUID(player.toString());
         Integer type =  data.getSpecies();
         if (obj == true) return type.toString();
-        switch (type) {
-            case CAT:
-                return "cat";
-            case HUMAN:
-                return "human";
-            case FOX:
-                return "fox";
-        }
-        return null;
+        return SPECIES_NAMES[type];
+
     }
 
     public Species getSpeciesObject(UUID player) throws SQLException {
