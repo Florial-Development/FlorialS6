@@ -40,6 +40,24 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <!--<artifactSet>
+                                <excludes>
+                                    <exclude>io.paper``mc.paper:paper-api</exclude>
+                                    <exclude>org.spigotmc:spigot-api</exclude>
+                                    <exclude>com.google.*</exclude>
+                                    <exclude>net.md_5.*</exclude>
+                                    <exclude>com.sk89q.*</exclude>
+                                    <exclude>com.fasterxml.*</exclude>
+                                    <exclude>io.netty</exclude>
+                                    <exclude>com.jetbrains.*</exclude>
+                                    <exclude>net.essentialsx</exclude>
+                                    <exclude>net.milkbowl.*</exclude>
+                                    <exclude>com.mojang.*</exclude>
+                                    <exclude>me.clip.*</exclude>
+                                    <exclude>it.unimi.*</exclude>
+                                </excludes>
+                            </artifactSet>-->
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>

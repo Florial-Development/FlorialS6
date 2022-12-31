@@ -1,6 +1,7 @@
 core\Florial.class
 species\Fox.class
 mysql\PlayerData.class
+listeners\scent\Scent.class
 species\Human.class
 commands\ChangeSpecies.class
 species\speciesinternal\SpeciesWrapper.class
