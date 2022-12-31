@@ -28,12 +28,9 @@ public class SpeciesWrapper {
         this.plugin = plugin;
     }
 
-    public SpeciesWrapper() {;
-    }
-
     // Method to set the species of a player
     public void setSpecies(UUID player, int species) throws SQLException {
-        PlayerData data = plugin.getDatabase().getPlayerStatsfromDatabase(player);
+        PlayerData data = Florial.getInstance().getDatabase().getPlayerStatsfromDatabase(player);
         data.setSpecies(species);
 
         plugin.getDatabase().updatePlayerStats(data);
@@ -41,7 +38,7 @@ public class SpeciesWrapper {
 
     // Method to get the species of a player
     public String getSpecies(UUID player, Boolean obj) throws SQLException {
-        PlayerData data = plugin.getDatabase().findPlayerStatsbyUUID(player.toString());
+        PlayerData data = Florial.getInstance().getDatabase().findPlayerStatsbyUUID(player.toString());
         Integer type =  data.getSpecies();
         if (obj == true) return type.toString();
         return SPECIES_NAMES[type];

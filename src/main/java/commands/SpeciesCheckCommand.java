@@ -13,7 +13,7 @@ public class SpeciesCheckCommand extends BaseCommand {
     public Florial plugin;
     public SpeciesCheckCommand(Florial plugin){this.plugin = plugin;}
 
-    SpeciesWrapper SpeciesWrapper = new SpeciesWrapper();
+    SpeciesWrapper SpeciesWrapper = new SpeciesWrapper(plugin);
     @CommandAlias("myspecies")
     public void onInfoPanel(Player p) throws SQLException {
         //SpeciesWrapper = new SpeciesWrapper(plugin);

@@ -7,10 +7,12 @@ import io.github.nosequel.menu.MenuHandler;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import mysql.FlorialDatabase;
+import mysql.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import species.speciesinternal.SpeciesWrapper;
@@ -30,8 +32,7 @@ public final class Florial extends JavaPlugin {
     //set on join
     //remove on leave
 
-    public HashMap<UUID, Integer> species = new HashMap<>();
-    public HashMap<UUID, Integer> dna = new HashMap<>();
+    public HashMap<Player, PlayerData> playerData = new HashMap<>();
 
     final FileConfiguration config2 = this.getConfig();
 
@@ -123,7 +124,11 @@ public final class Florial extends JavaPlugin {
 
     }
 
-    public Florial getInstance(){
+    public static Florial getInstance(){
         return instance;
+    }
+
+    public PlayerData getPlayerData(Player player) {
+        return playerData.get(player);
     }
 }
