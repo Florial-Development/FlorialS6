@@ -40,6 +40,17 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>it.unimi.*</exclude>
+                                    <exclude>io.netty.*</exclude>
+                                    <exclude>io.papermc.*</exclude>
+                                    <exclude>com.ibm.*</exclude>
+                                    <exclude>com.sk89q.*</exclude>
+                                    <exclude>org.bukkit.*</exclude>
+                                    <exclude>org.*</exclude>
+                                </excludes>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
@@ -147,6 +158,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.17.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -157,17 +169,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
             <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.github.ThatKawaiiSam</groupId>
             <artifactId>Assemble</artifactId>
             <version>f774e3fdc1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

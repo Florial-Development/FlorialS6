@@ -1,10 +1,16 @@
 core\Florial.class
 species\Fox.class
 mysql\PlayerData.class
+listeners\PlayerListeners.class
+listeners\scent\Scent.class
 species\Human.class
+listeners\PlayerListeners$1.class
+mysql\FlorialDatabase$1.class
+utils\GeneralUtils.class
 commands\ChangeSpecies.class
 species\speciesinternal\SpeciesWrapper.class
 commands\SpeciesCheckCommand.class
 mysql\FlorialDatabase.class
+species\speciesinternal\SpeciesEnum.class
 species\Cat.class
 species\speciesinternal\Species.class

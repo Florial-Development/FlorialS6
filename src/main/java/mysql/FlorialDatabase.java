@@ -1,7 +1,11 @@
 package mysql;
 
 import core.Florial;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import species.speciesinternal.SpeciesEnum;
 
 import java.sql.*;
 import java.util.UUID;
@@ -74,17 +78,24 @@ public class FlorialDatabase {
     }
 
     public void updatePlayerStats(PlayerData data) throws SQLException{
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                PreparedStatement statement = null;
+                try {
+                    statement = Florial.getInstance().getDatabase().getConnection().prepareStatement("UPDATE florial_players SET species = ?, dna = ? WHERE uuid = ?");
+                    statement.setInt(1, data.getSpecies());
+                    statement.setInt(2, data.getDna());
+                    statement.setString(3, data.getUuid());
 
-        PreparedStatement statement = getConnection().prepareStatement("UPDATE florial_players SET species = ?, dna = ? WHERE uuid = ?");
+                    statement.executeUpdate();
 
-        statement.setInt(1, data.getSpecies());
-        statement.setInt(2, data.getDna());
-        statement.setString(3, data.getUuid());
-
-        statement.executeUpdate();
-
-        statement.close();
-
+                    statement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.runTaskAsynchronously(Florial.getInstance());
     }
 
     public PlayerData getPlayerStatsfromDatabase(UUID u) throws SQLException{
