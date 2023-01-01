@@ -27,6 +27,9 @@ public class SpeciesWrapper {
     public SpeciesWrapper(Florial plugin) {
         this.plugin = plugin;
     }
+    public SpeciesWrapper(){
+
+    }
 
     // Method to set the species of a player
     public void setSpecies(UUID player, int species) throws SQLException {
@@ -44,21 +47,8 @@ public class SpeciesWrapper {
         return SPECIES_NAMES[type];
     }
 
-    public String getSpeciesName(Player p) {
-
-        return null;
+    public PlayerData getData(Player p){
+        return plugin.playerData.get(p);
     }
 
-    public Species getSpeciesObject(UUID player) throws SQLException {
-        int species = Integer.valueOf(getSpecies(player, true));
-        switch (species) {
-            case FOX:
-                return new Fox();
-            case CAT:
-                return new Cat();
-            case HUMAN:
-                return new Human();
-        }
-        return null;
-    }
 }

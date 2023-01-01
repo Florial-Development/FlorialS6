@@ -32,7 +32,7 @@ public final class Florial extends JavaPlugin {
     //set on join
     //remove on leave
 
-    public HashMap<Player, PlayerData> playerData = new HashMap<>();
+    public HashMap<Player, PlayerData> playerData;
 
     final FileConfiguration config2 = this.getConfig();
 
@@ -41,13 +41,17 @@ public final class Florial extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
+        playerData = new HashMap<>();
         setupCommands();
         setupListeners();
         new MenuHandler(this);
         enableRecipes();
         setupManagers();
         new SpeciesWrapper(this);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+        }
 
 
         try{
