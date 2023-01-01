@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import mysql.FlorialDatabase;
 import mysql.PlayerData;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,8 +16,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import species.speciesinternal.SpeciesWrapper;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -50,7 +54,28 @@ public final class Florial extends JavaPlugin {
         new SpeciesWrapper(this);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        // Check if they don't exist in the db (first time join)
+                        PreparedStatement statement = Florial.getInstance().getDatabase().getConnection().prepareStatement("SELECT * FROM florial_players WHERE uuid = ?");
+                        statement.setString(1, player.getUniqueId().toString());
+                        ResultSet results = statement.executeQuery();
+                        if (!results.next()) {
+                            PlayerData data = new PlayerData(player.getUniqueId().toString(), 0, 0);
+                            Florial.getInstance().getDatabase().createPlayerStats(data);
+                            Florial.getInstance().playerData.put(player, data);
+                            statement.close();
+                        } else {
+                            PlayerData data = new PlayerData(player.getUniqueId().toString(), results.getInt(2), results.getInt(3));
+                            Florial.getInstance().playerData.put(player, data);
+                        }
+                    } catch (SQLException e) {
+                        player.sendMessage(Component.text());
+                    }
+                }
+            }.runTaskAsynchronously(this);
         }
 
 
@@ -58,7 +83,7 @@ public final class Florial extends JavaPlugin {
             this.database = new FlorialDatabase(this);
             database.initializeDatabase();
         } catch (SQLException e){
-            System.out.println("Unable to load database, connect, or create tables");
+            Bukkit.getLogger().severe("Unable to load database, connect, or create tables");
             e.printStackTrace();
 
         }
@@ -126,10 +151,6 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new SpeciesCheckCommand(this));
         manager.registerCommand(new ChangeSpecies(this));
 
-    }
-
-    public static Florial getInstance(){
-        return instance;
     }
 
     public PlayerData getPlayerData(Player player) {
