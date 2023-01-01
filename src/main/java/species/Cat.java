@@ -1,6 +1,7 @@
 package species;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import species.speciesinternal.Species;
@@ -24,4 +25,10 @@ public class Cat extends Species {
     public void performAbility() {
 
     }
+
+    @Override
+    public void speciesRespawn(PlayerRespawnEvent e) {
+
+    }
+
 }

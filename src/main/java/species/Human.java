@@ -1,5 +1,6 @@
 package species;
 
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import species.speciesinternal.Species;
 
@@ -14,11 +15,16 @@ public class Human extends Species {
      * @param maxhealth
      */
     public Human(List<PotionEffect> permEffects, int maxhealth) {
-        super(permEffects, maxhealth);
+        super(permEffects, maxhealth, 3);
     }
 
     @Override
     public void performAbility() {
+
+    }
+
+    @Override
+    public void speciesRespawn(PlayerRespawnEvent e) {
 
     }
 }
