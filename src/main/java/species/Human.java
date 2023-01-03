@@ -1,8 +1,11 @@
 package species;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import species.speciesinternal.Species;
+import species.speciesinternal.SpeciesEnum;
 
 import java.util.List;
 
@@ -15,11 +18,16 @@ public class Human extends Species {
      * @param maxhealth
      */
     public Human(List<PotionEffect> permEffects, int maxhealth) {
-        super(permEffects, maxhealth, 3);
+        super(permEffects, maxhealth, SpeciesEnum.HUMAN);
     }
 
     @Override
     public void performAbility() {
+
+    }
+
+    @Override
+    public void onPlayerAttackEntity(Player attacker, Entity victim) {
 
     }
 

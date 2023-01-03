@@ -11,7 +11,7 @@ public class Scent implements Listener {
     @EventHandler
     public void scentlistener(PlayerInteractEvent e) {
         //just testing
-        PlayerData p = new PlayerData(e.getPlayer().getUniqueId().toString(), 1, 0);
+        //PlayerData p = new PlayerData(e.getPlayer().getUniqueId().toString(), 1, 0);
 
 
     }

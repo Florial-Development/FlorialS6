@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import species.speciesinternal.SpeciesEnum;
+import upgrades.Skill;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PlayerData {
 
@@ -17,11 +19,15 @@ public class PlayerData {
     @Getter @Setter
     private int species;
 
+    @Getter @Setter
+    private ArrayList<Skill> skills;
 
-    public PlayerData(String uuid, int species, int dna) {
+
+    public PlayerData(String uuid, int species, int dna, ArrayList<Skill> skills) {
         this.uuid = uuid;
         this.dna = dna;
         this.species = species;
+        this.skills = skills;
     }
 
     public SpeciesEnum getSpeciesEnum() {

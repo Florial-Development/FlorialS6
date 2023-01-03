@@ -14,6 +14,9 @@ import utils.GeneralUtils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PlayerListeners implements Listener {
 
@@ -28,12 +31,17 @@ public class PlayerListeners implements Listener {
                         statement.setString(1, event.getPlayer().getUniqueId().toString());
                         ResultSet results = statement.executeQuery();
                         if (!results.next()) {
-                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), 0, 0);
+                            List<Integer> indexes = new ArrayList<>(Arrays.asList(0,0,0,0,0));
+                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), 0, 0,
+                                    Florial.getInstance().getDatabase().createSkills(indexes));
+
                             Florial.getInstance().getDatabase().createPlayerStats(data);
                             Florial.getInstance().playerData.put(event.getPlayer(), data);
                             statement.close();
                         } else {
-                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), results.getInt(2), results.getInt(3));
+                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), results.getInt(2), results.getInt(3),
+                                    Florial.getInstance().getDatabase().fetchSkills(results.getString(4)));
+
                             Florial.getInstance().playerData.put(event.getPlayer(), data);
                         }
                     } catch (SQLException e) {
@@ -50,6 +58,7 @@ public class PlayerListeners implements Listener {
             public void run() {
                 PlayerData data = Florial.getInstance().getPlayerData(event.getPlayer());
                 data.save();
+                try {Florial.getInstance().getDatabase().updatePlayerStats(data);} catch (SQLException e) {throw new RuntimeException(e);}
             }
         }.runTaskAsynchronously(Florial.getInstance());
     }

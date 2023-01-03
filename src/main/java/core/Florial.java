@@ -1,9 +1,11 @@
 package core;
 
 import co.aikar.commands.PaperCommandManager;
+import commands.ChangeSkillsCommand;
 import commands.ChangeSpecies;
 import commands.SpeciesCheckCommand;
 import io.github.nosequel.menu.MenuHandler;
+import listeners.PlayerListeners;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import mysql.FlorialDatabase;
@@ -63,12 +65,17 @@ public final class Florial extends JavaPlugin {
                         statement.setString(1, player.getUniqueId().toString());
                         ResultSet results = statement.executeQuery();
                         if (!results.next()) {
-                            PlayerData data = new PlayerData(player.getUniqueId().toString(), 0, 0);
+                            List<Integer> indexes = new ArrayList<>(Arrays.asList(0,0,0,0,0));
+                            PlayerData data = new PlayerData(player.getUniqueId().toString(), 0, 0,
+                                    Florial.getInstance().getDatabase().createSkills(indexes));
+
                             Florial.getInstance().getDatabase().createPlayerStats(data);
                             Florial.getInstance().playerData.put(player, data);
                             statement.close();
                         } else {
-                            PlayerData data = new PlayerData(player.getUniqueId().toString(), results.getInt(2), results.getInt(3));
+                            PlayerData data = new PlayerData(player.getUniqueId().toString(), results.getInt(2), results.getInt(3),
+                                    Florial.getInstance().getDatabase().fetchSkills(results.getString(4)));
+
                             Florial.getInstance().playerData.put(player, data);
                         }
                     } catch (SQLException e) {
@@ -106,6 +113,8 @@ public final class Florial extends JavaPlugin {
     }
 
     private void setupListeners() {
+        getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
+
     }
 
     private void enableRecipes() {
@@ -116,6 +125,7 @@ public final class Florial extends JavaPlugin {
                 null, null, null, null, null, null, null), new ItemStack(Material.GOLDEN_APPLE));
     }
     private void registerRecipes(String key, Boolean isShaped, String column1, String column2, String column3, List<ItemStack> ritems, ItemStack output) {
+        NamespacedKey nk = new NamespacedKey(this, key);
         Recipe recipe = isShaped ? new ShapedRecipe(NamespacedKey.minecraft(key),output) : new ShapelessRecipe(
                 NamespacedKey.minecraft(key),output);
         if (recipe instanceof ShapedRecipe shapedRecipe) {
@@ -133,8 +143,7 @@ public final class Florial extends JavaPlugin {
             ritems.forEach((itemStack) ->
                     shapelessRecipe.addIngredient(new RecipeChoice.ExactChoice(itemStack)));
         }
-
-        Bukkit.addRecipe(recipe);
+        try {Bukkit.addRecipe(recipe);} catch (IllegalStateException ignored) {}
 
     }
 
@@ -150,6 +159,7 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand(this));
         manager.registerCommand(new ChangeSpecies(this));
+        manager.registerCommand(new ChangeSkillsCommand(this));
 
     }
 
