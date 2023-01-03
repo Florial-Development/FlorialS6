@@ -1,32 +1,34 @@
-package mysql;
+package me.florial.models;
 
-import core.Florial;
-import lombok.Getter;
-import lombok.Setter;
+import me.florial.Florial;
+import lombok.Data;
+import me.florial.species.SpecieType;
+import me.florial.species.Species;
 import org.bukkit.Bukkit;
-import species.speciesinternal.SpeciesEnum;
 
 import java.sql.SQLException;
 
+@Data
 public class PlayerData {
 
-    @Getter @Setter
-    private String uuid;
-    @Getter @Setter
-    private int dna;
-    @Getter @Setter
-    private int species;
-
+    String uuid;
+    int dna;
+    int specieId;
 
     public PlayerData(String uuid, int species, int dna) {
         this.uuid = uuid;
         this.dna = dna;
-        this.species = species;
+        this.specieId = species;
     }
 
-    public SpeciesEnum getSpeciesEnum() {
-        return SpeciesEnum.getSpeciesFromID(species);
+    public SpecieType getSpecieType() {
+        return SpecieType.fromID(specieId);
     }
+    
+    public Species getSpecies() {
+        return getSpecieType().getSpecie();
+    }
+    
     public void save() {
         try {
             Florial.getInstance().getDatabase().updatePlayerStats(this);

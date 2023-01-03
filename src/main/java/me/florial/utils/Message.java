@@ -1,4 +1,4 @@
-package utils;
+package me.florial.utils;
 
 
 import net.kyori.adventure.text.Component;

@@ -1,15 +1,13 @@
-package listeners;
+package me.florial.listeners;
 
-import core.Florial;
-import mysql.PlayerData;
+import me.florial.Florial;
+import me.florial.models.PlayerData;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import species.speciesinternal.SpeciesEnum;
-import utils.GeneralUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,11 +28,11 @@ public class PlayerListeners implements Listener {
                         if (!results.next()) {
                             PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), 0, 0);
                             Florial.getInstance().getDatabase().createPlayerStats(data);
-                            Florial.getInstance().playerData.put(event.getPlayer(), data);
+                            Florial.getInstance().getPlayerData().put(event.getPlayer(), data);
                             statement.close();
                         } else {
                             PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), results.getInt(2), results.getInt(3));
-                            Florial.getInstance().playerData.put(event.getPlayer(), data);
+                            Florial.getInstance().getPlayerData().put(event.getPlayer(), data);
                         }
                     } catch (SQLException e) {
                         event.getPlayer().sendMessage(Component.text());

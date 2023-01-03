@@ -1,32 +1,27 @@
-package mysql;
+package me.florial.mysql;
 
-import core.Florial;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import me.florial.Florial;
+import me.florial.models.PlayerData;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import species.speciesinternal.SpeciesEnum;
 
 import java.sql.*;
 import java.util.UUID;
 
 public class FlorialDatabase {
 
-    public Florial plugin;
-    public FlorialDatabase(Florial plugin){
-        this.plugin = plugin;
-    }
-
     private Connection connection;
 
     public Connection getConnection() throws SQLException {
-        if (connection != null) {
-            return connection;
-        }
+        if (connection != null) return connection;
 
-        String url = plugin.getConfig().getString("url");
-        String password = plugin.getConfig().getString("password");
+        String url = Florial.getInstance().getConfig().getString("url");
+        String password = Florial.getInstance().getConfig().getString("password");
         String user = "root";
+        
+        if (url == null || password == null) {
+            System.out.println("Please set the url and password in the config.yml");
+            return null;
+        }
 
         this.connection = DriverManager.getConnection(url, user, password);
 
@@ -35,12 +30,10 @@ public class FlorialDatabase {
     }
 
     public void initializeDatabase() throws SQLException {
-        Statement statement = getConnection().createStatement();
-        String sql = "CREATE TABLE IF NOT EXISTS florial_players(uuid varchar(36) primary key, species int, dna int)";
-        statement.execute(sql);
+        PreparedStatement statement = getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS florial_players(uuid varchar(36) primary key, species int, dna int)");
+        statement.execute();
 
         System.out.println("Created table!");
-
     }
 
     public PlayerData findPlayerStatsbyUUID(String u) throws SQLException {
@@ -50,7 +43,7 @@ public class FlorialDatabase {
         ResultSet results = statement.executeQuery();
         if (results.next()){
 
-            int species = results.getInt("species");
+            int species = results.getInt("me/florial/species");
             int dna = results.getInt("dna");
 
             PlayerData playerData = new PlayerData(u, species, dna);
@@ -64,11 +57,10 @@ public class FlorialDatabase {
 
 
     public void createPlayerStats(PlayerData data) throws SQLException{
-
         PreparedStatement statement = getConnection().prepareStatement("INSERT INTO florial_players(uuid, species, dna) VALUES (?, ?, ?)");
 
         statement.setString(1, data.getUuid());
-        statement.setInt(2, data.getSpecies());
+        statement.setInt(2, data.getSpecieId());
         statement.setInt(3, data.getDna());
 
         statement.executeUpdate();
@@ -81,10 +73,9 @@ public class FlorialDatabase {
         new BukkitRunnable() {
             @Override
             public void run() {
-                PreparedStatement statement = null;
                 try {
-                    statement = Florial.getInstance().getDatabase().getConnection().prepareStatement("UPDATE florial_players SET species = ?, dna = ? WHERE uuid = ?");
-                    statement.setInt(1, data.getSpecies());
+                    PreparedStatement statement = Florial.getInstance().getDatabase().getConnection().prepareStatement("UPDATE florial_players SET species = ?, dna = ? WHERE uuid = ?");
+                    statement.setInt(1, data.getSpecieId());
                     statement.setInt(2, data.getDna());
                     statement.setString(3, data.getUuid());
 
@@ -92,7 +83,7 @@ public class FlorialDatabase {
 
                     statement.close();
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
         }.runTaskAsynchronously(Florial.getInstance());
@@ -100,10 +91,10 @@ public class FlorialDatabase {
 
     public PlayerData getPlayerStatsfromDatabase(UUID u) throws SQLException{
 
-        PlayerData data = plugin.getDatabase().findPlayerStatsbyUUID(u.toString());
+        PlayerData data = Florial.getInstance().getDatabase().findPlayerStatsbyUUID(u.toString());
         if (data == null){
             data = new PlayerData(u.toString(), 0, 0);
-            plugin.getDatabase().createPlayerStats(data);
+            Florial.getInstance().getDatabase().createPlayerStats(data);
             return data;
         } else {
             return data;
