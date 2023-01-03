@@ -58,7 +58,6 @@ public class PlayerListeners implements Listener {
             public void run() {
                 PlayerData data = Florial.getInstance().getPlayerData(event.getPlayer());
                 data.save();
-                try {Florial.getInstance().getDatabase().updatePlayerStats(data);} catch (SQLException e) {throw new RuntimeException(e);}
             }
         }.runTaskAsynchronously(Florial.getInstance());
     }
