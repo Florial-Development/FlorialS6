@@ -1,22 +1,17 @@
-package listeners;
+package me.florial.listeners;
 
-import core.Florial;
-import mysql.PlayerData;
+import me.florial.Florial;
+import me.florial.models.PlayerData;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import species.speciesinternal.SpeciesEnum;
-import utils.GeneralUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PlayerListeners implements Listener {
 
@@ -31,18 +26,13 @@ public class PlayerListeners implements Listener {
                         statement.setString(1, event.getPlayer().getUniqueId().toString());
                         ResultSet results = statement.executeQuery();
                         if (!results.next()) {
-                            List<Integer> indexes = new ArrayList<>(Arrays.asList(0,0,0,0,0));
-                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), 0, 0,
-                                    Florial.getInstance().getDatabase().createSkills(indexes));
-
+                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), 0, 0);
                             Florial.getInstance().getDatabase().createPlayerStats(data);
-                            Florial.getInstance().playerData.put(event.getPlayer(), data);
+                            Florial.getInstance().getPlayerData().put(event.getPlayer(), data);
                             statement.close();
                         } else {
-                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), results.getInt(2), results.getInt(3),
-                                    Florial.getInstance().getDatabase().fetchSkills(results.getString(4)));
-
-                            Florial.getInstance().playerData.put(event.getPlayer(), data);
+                            PlayerData data = new PlayerData(event.getPlayer().getUniqueId().toString(), results.getInt(2), results.getInt(3));
+                            Florial.getInstance().getPlayerData().put(event.getPlayer(), data);
                         }
                     } catch (SQLException e) {
                         event.getPlayer().sendMessage(Component.text());

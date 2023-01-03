@@ -1,7 +1,6 @@
-package listeners.scent;
+package me.florial.listeners.scent;
 
-import mysql.PlayerData;
-import org.bukkit.entity.Player;
+import me.florial.models.PlayerData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;

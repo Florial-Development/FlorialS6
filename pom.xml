@@ -38,27 +38,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <!--<artifactSet>
-                                <excludes>
-                                    <exclude>io.paper``mc.paper:paper-api</exclude>
-                                    <exclude>org.spigotmc:spigot-api</exclude>
-                                    <exclude>com.google.*</exclude>
-                                    <exclude>net.md_5.*</exclude>
-                                    <exclude>com.sk89q.*</exclude>
-                                    <exclude>com.fasterxml.*</exclude>
-                                    <exclude>io.netty</exclude>
-                                    <exclude>com.jetbrains.*</exclude>
-                                    <exclude>net.essentialsx</exclude>
-                                    <exclude>net.milkbowl.*</exclude>
-                                    <exclude>com.mojang.*</exclude>
-                                    <exclude>me.clip.*</exclude>
-                                    <exclude>it.unimi.*</exclude>
-                                </excludes>
-                            </artifactSet>-->
-                            <minimizeJar>true</minimizeJar>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -152,6 +131,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
             <version>0.5.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -161,10 +141,12 @@
             <scope>compile</scope>
             <type>pom</type>
         </dependency>
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.17.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -215,6 +197,7 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-core</artifactId>
             <version>7.0.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.NetzkroneHD</groupId>
@@ -226,11 +209,13 @@
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>5.0.0-alpha.21</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.NuVotifier</groupId>
             <artifactId>NuVotifier</artifactId>
             <version>2.7.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>

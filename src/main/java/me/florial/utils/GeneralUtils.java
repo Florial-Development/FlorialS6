@@ -1,7 +1,6 @@
-package utils;
+package me.florial.utils;
 
-import core.Florial;
-import org.bukkit.Bukkit;
+import me.florial.Florial;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GeneralUtils {
