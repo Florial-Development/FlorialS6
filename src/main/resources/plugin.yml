@@ -1,6 +1,8 @@
 name: Florial
 version: '1.0'
-main: core.Florial
+main: net.florial.Florial
 api-version: 1.19
 authors: [ Rosa, Tulip ]
 description: Florial server core
+depend:
+  - ProtocolLib
