@@ -11,4 +11,8 @@ public abstract class ThirstEvent extends Event {
     public @NotNull HandlerList getHandlers() {
         return handlerList;
     }
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
 }
