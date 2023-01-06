@@ -2,6 +2,7 @@ package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
 import net.florial.commands.ChangeSpeciesCommand;
+import net.florial.commands.NuzzleCommand;
 import net.florial.commands.SpeciesCheckCommand;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -9,6 +10,11 @@ import net.florial.database.FlorialDatabase;
 import net.florial.listeners.PlayerListeners;
 import net.florial.listeners.SpecieListener;
 import net.florial.models.PlayerData;
+import net.florial.species.SpecieType;
+import net.florial.species.Species;
+import net.florial.species.impl.Cat;
+import net.florial.species.impl.Fox;
+import net.florial.species.impl.Human;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,6 +23,7 @@ import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class Florial extends JavaPlugin {
     
@@ -31,12 +38,17 @@ public final class Florial extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         setupCommands();
-        enableRecipes();
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
+        SpecieType.getAllSpecies().forEach(species -> {
+            if (species == null) return;
+            getServer().getPluginManager().registerEvents(species, this);
+        });
+
 
         FlorialDatabase.initializeDatabase();
+        enableRecipes();
     }
 
 
@@ -83,6 +95,7 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
+        manager.registerCommand(new NuzzleCommand());
 
     }
     

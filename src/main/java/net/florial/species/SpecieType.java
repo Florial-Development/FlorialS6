@@ -7,11 +7,15 @@ import net.florial.species.impl.Fox;
 import net.florial.species.impl.Human;
 import org.bukkit.Bukkit;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum SpecieType {
     NONE(0, null),
-    CAT(1, new Cat()),
-    FOX(2, new Fox()),
-    HUMAN(3, new Human());
+    CAT(1, new Cat(1)),
+    FOX(2, new Fox(2)),
+    HUMAN(3, new Human(3));
 
     @Getter private final int id;
     @Getter private final Species specie;
@@ -19,7 +23,6 @@ public enum SpecieType {
     SpecieType(int id, Species specie) {
         this.id = id;
         this.specie = specie;
-        Bukkit.getPluginManager().registerEvents(specie, Florial.getInstance());
     }
     
     public static SpecieType fromID(int id) {
@@ -28,5 +31,8 @@ public enum SpecieType {
         
         return null;
     }
-    
+
+    public static List<Species> getAllSpecies() {
+        return Arrays.stream(values()).map(SpecieType::getSpecie).collect(Collectors.toList());
+    }
 }

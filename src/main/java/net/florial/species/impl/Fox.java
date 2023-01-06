@@ -7,8 +7,8 @@ import net.florial.species.events.impl.SpeciesRespawnEvent;
 
 public class Fox extends Species {
     
-    public Fox() {
-        super("Fox", SpecieType.FOX.getId());
+    public Fox(int id) {
+        super("Fox", id);
     }
     
     @EventHandler
