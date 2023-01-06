@@ -1,8 +1,11 @@
 package net.florial.listeners;
 
+import net.florial.features.thirst.ThirstManager;
 import net.florial.Florial;
 import net.florial.database.FlorialDatabase;
 import net.florial.models.PlayerData;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,9 +15,19 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        FlorialDatabase.getPlayerData(event.getPlayer()).thenAccept(playerData -> {
-           Florial.getPlayerData().put(event.getPlayer().getUniqueId(), playerData);
+        Player p = event.getPlayer();
+        FlorialDatabase.getPlayerData(p).thenAccept(playerData -> {
+           Florial.getPlayerData().put(p.getUniqueId(), playerData);
         });
+
+        if (Florial.getInstance().thirst.get(p.getUniqueId()) == null) Florial.getInstance().thirst.put(p.getUniqueId(), 20);
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Florial.getInstance(), () -> {
+            if (!p.isOnline()) return;
+            ThirstManager.updateThirst(p);
+            }, 35L, 35);
+
+
     }
 
     @EventHandler
@@ -22,4 +35,5 @@ public class PlayerListeners implements Listener {
         PlayerData data = Florial.getPlayerData().get(event.getPlayer().getUniqueId());
         data.save(true);
     }
+
 }

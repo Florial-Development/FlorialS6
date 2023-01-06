@@ -1,6 +1,7 @@
 package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
+import net.florial.features.thirst.ThirstManager;
 import net.florial.commands.ChangeSpeciesCommand;
 import net.florial.commands.SpeciesCheckCommand;
 import lombok.Getter;
@@ -8,11 +9,14 @@ import lombok.SneakyThrows;
 import net.florial.database.FlorialDatabase;
 import net.florial.listeners.PlayerListeners;
 import net.florial.listeners.SpecieListener;
+import net.florial.listeners.ThirstListener;
 import net.florial.models.PlayerData;
+import net.florial.species.events.SpeciesEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,15 +30,15 @@ public final class Florial extends JavaPlugin {
     
     @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
 
+    public HashMap<UUID, Integer> thirst = new HashMap<>();
+
     @SneakyThrows
     @Override
     public void onEnable() {
         saveDefaultConfig();
         setupCommands();
         enableRecipes();
-
-        getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
-        getServer().getPluginManager().registerEvents(new SpecieListener(), this);
+        registerListeners();
 
         FlorialDatabase.initializeDatabase();
     }
@@ -74,7 +78,7 @@ public final class Florial extends JavaPlugin {
             ritems.forEach((itemStack) ->
                 shapelessRecipe.addIngredient(new RecipeChoice.ExactChoice(itemStack)));
         }
-
+        Bukkit.removeRecipe(new NamespacedKey(this, key));
         Bukkit.addRecipe(recipe);
 
     }
@@ -83,6 +87,15 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
+
+    }
+
+    private void registerListeners(){
+        getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
+        getServer().getPluginManager().registerEvents(new SpecieListener(), this);
+        getServer().getPluginManager().registerEvents(new ThirstListener(), this);
+        getServer().getPluginManager().registerEvents(new ThirstManager(), this);
+
 
     }
     
