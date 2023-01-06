@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,8 +24,10 @@ public abstract class Species implements Listener {
         this.id = id;
     }
     
-    public Set<PotionEffectType> performAbility() {
+    public Set<PotionEffectType> effects() {
         return new HashSet<>();
     }
+
+    public void apply(Player player) {}
     
 }

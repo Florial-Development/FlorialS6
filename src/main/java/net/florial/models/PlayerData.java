@@ -10,9 +10,12 @@ import net.florial.species.SpecieType;
 import net.florial.species.Species;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 @Data
 @Entity("playerdata")
@@ -55,8 +58,21 @@ public class PlayerData {
     }
 
     @BsonIgnore
+    public Player getPlayer() {
+        return Bukkit.getPlayer(java.util.UUID.fromString(this.UUID));
+    }
+
+    @BsonIgnore
     public void save(boolean async) {
         if (async) FlorialDatabase.createNewPlayerDataAsync(this);
         else FlorialDatabase.createNewPlayerData(this);
     }
+
+    @BsonIgnore
+    public void refresh() {
+        for (PotionEffectType effect : getSpecies().effects()) {
+            getPlayer().addPotionEffect(new PotionEffect(effect, 20000000, 1, true, false));
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ public class SpecieListener implements Listener {
     
     @EventHandler
     private void onRespawn(PlayerRespawnEvent event) {
-        PlayerData data = Florial.getInstance().getPlayerData().get(event.getPlayer());
+        PlayerData data = Florial.getPlayerData().get(event.getPlayer().getUniqueId());
         if (data == null) return;
         
         SpeciesRespawnEvent e = new SpeciesRespawnEvent(
@@ -29,23 +29,23 @@ public class SpecieListener implements Listener {
     
     @EventHandler
     private void onDeath(PlayerDeathEvent event) {
-        PlayerData data = Florial.getInstance().getPlayerData().get(event.getEntity());
+        PlayerData data = Florial.getPlayerData().get(event.getPlayer().getUniqueId());
         if (data == null) return;
         
         SpeciesDeathEvent death = new SpeciesDeathEvent(
-            event.getEntity(),
+            event.getPlayer(),
             data,
             data.getSpecieType()
         );
         
         Bukkit.getPluginManager().callEvent(death);
     
-        if (event.getEntity().getKiller() != null) {
+        if (event.getPlayer().getKiller() != null) {
             SpeciesKillEvent kill = new SpeciesKillEvent(
-                event.getEntity().getKiller(),
-                event.getEntity(),
-                Florial.getInstance().getPlayerData().get(event.getEntity().getKiller()),
-                Florial.getInstance().getPlayerData().get(event.getEntity()).getSpecieType()
+                event.getPlayer().getKiller(),
+                event.getPlayer(),
+                Florial.getPlayerData().get(event.getPlayer().getKiller().getUniqueId()),
+                Florial.getPlayerData().get(event.getPlayer().getUniqueId()).getSpecieType()
             );
     
             Bukkit.getPluginManager().callEvent(kill);
