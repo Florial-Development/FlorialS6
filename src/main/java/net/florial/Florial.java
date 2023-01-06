@@ -2,7 +2,6 @@ package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
 import net.florial.commands.ChangeSpeciesCommand;
-import net.florial.commands.NuzzleCommand;
 import net.florial.commands.SpeciesCheckCommand;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -10,11 +9,6 @@ import net.florial.database.FlorialDatabase;
 import net.florial.listeners.PlayerListeners;
 import net.florial.listeners.SpecieListener;
 import net.florial.models.PlayerData;
-import net.florial.species.SpecieType;
-import net.florial.species.Species;
-import net.florial.species.impl.Cat;
-import net.florial.species.impl.Fox;
-import net.florial.species.impl.Human;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -32,6 +26,8 @@ public final class Florial extends JavaPlugin {
     }
     
     @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
+
+    @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -86,7 +82,7 @@ public final class Florial extends JavaPlugin {
             ritems.forEach((itemStack) ->
                 shapelessRecipe.addIngredient(new RecipeChoice.ExactChoice(itemStack)));
         }
-
+        Bukkit.removeRecipe(new NamespacedKey(this, key));
         Bukkit.addRecipe(recipe);
 
     }
