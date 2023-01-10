@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import net.florial.Florial;
+import net.florial.features.enemies.events.MobDeathEvent;
 import net.florial.features.enemies.events.MobSpawnEvent;
 import net.florial.utils.MobSpawn;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -68,6 +70,14 @@ public abstract class Mob implements Listener {
         if (this.entity == EntityType.HOGLIN) ((Hoglin) me).setImmuneToZombification(true);
 
 
+    }
+
+    @EventHandler
+    public void whenIdie(MobDeathEvent event) {
+
+        if (event.getEntity() != this.entity) return;
+
+        for (ItemStack i : this.drops) {event.getDrops().add(i);}
     }
 
 
