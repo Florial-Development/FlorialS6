@@ -20,7 +20,7 @@ public class PlayerListeners implements Listener {
            Florial.getPlayerData().put(p.getUniqueId(), playerData);
         });
 
-        if (Florial.getInstance().thirst.get(p.getUniqueId()) == null) Florial.getInstance().thirst.put(p.getUniqueId(), 20);
+        if (Florial.getThirst().get(p.getUniqueId()) == null) Florial.getThirst().put(p.getUniqueId(), 20);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Florial.getInstance(), () -> {
             if (!p.isOnline()) return;

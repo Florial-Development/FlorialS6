@@ -82,10 +82,6 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>paper-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
@@ -125,12 +121,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
-            <version>0.5.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -158,6 +148,13 @@
             <artifactId>JDA</artifactId>
             <version>5.0.0-alpha.21</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
+            <version>0.5.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

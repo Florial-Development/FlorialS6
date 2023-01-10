@@ -11,13 +11,15 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
+
 public class ThirstManager implements Listener {
 
 
     @EventHandler
     public void DrinkWater(HydrateEvent event) {
         Player p = event.getPlayer();
-        if (getThirst(p) >= 20) return;
+        if (event.getThirst() >= 20) return;
         Hydrate(p, 2);
         p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 3, 2);
         if (p.hasPotionEffect(PotionEffectType.WITHER)) p.removePotionEffect(PotionEffectType.WITHER);
@@ -50,19 +52,19 @@ public class ThirstManager implements Listener {
     }
 
     public static Integer getThirst(Player p){
-        return Florial.getInstance().thirst.get(p.getUniqueId());
-
+        return Florial.getThirst().get(p.getUniqueId());
     }
 
     private void Hydrate(Player p, Integer amount){
-        Florial.getInstance().thirst.put(p.getUniqueId(), getThirst(p) + amount);
+        Florial.getThirst().put(p.getUniqueId(), getThirst(p) + amount);
+
         if (getThirst(p) == 20)
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
                     60, 1, false, false, true));
     }
 
     private void deHydrate(Player p, Integer amount){
-        Florial.getInstance().thirst.put(p.getUniqueId(), getThirst(p) - amount);
+        Florial.getThirst().put(p.getUniqueId(), getThirst(p) - amount);
     }
 
 }
