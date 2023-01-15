@@ -92,6 +92,11 @@
         </repository>
 
         <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+        </repository>
+
+        <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
@@ -155,6 +160,18 @@
             <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
             <version>0.5.1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.rysefoxx.inventory</groupId>
+            <artifactId>RyseInventory-Plugin</artifactId>
+            <version>1.5.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bananapuncher714</groupId>
+            <artifactId>nbteditor</artifactId>
+            <version>7.18.4</version>
         </dependency>
 
         <dependency>

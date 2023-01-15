@@ -1,7 +1,9 @@
 package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
+import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import net.florial.commands.ChangeSpeciesCommand;
+import net.florial.commands.ChocolateerCommand;
 import net.florial.commands.NuzzleCommand;
 import net.florial.commands.SpeciesCheckCommand;
 import lombok.Getter;
@@ -39,11 +41,19 @@ public final class Florial extends JavaPlugin {
 
     @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
 
+
+    @Getter
+    private final InventoryManager manager = new InventoryManager(this);
+
+
     @SneakyThrows
     @Override
     public void onEnable() {
         saveDefaultConfig();
         setupCommands();
+
+        manager.invoke();
+
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
@@ -111,6 +121,7 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
         manager.registerCommand(new NuzzleCommand());
+        manager.registerCommand(new ChocolateerCommand());
 
     }
 
