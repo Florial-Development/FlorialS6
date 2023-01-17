@@ -28,9 +28,10 @@ public class Cat extends Species {
 
     @EventHandler
     public void onPlayerAttack(EntityDamageByEntityEvent event) {
-        Bukkit.broadcast(Component.text("Called"));
         if (event.getDamager() instanceof Player attacker) {
             if (attacker.getInventory().getItemInMainHand().getType() == Material.AIR) {
+
+                Bukkit.broadcast(Component.text("Called"));
 
                 Location particleLoc = attacker.getLocation().clone()
                     .add(0.0, 1.0, 0.0)

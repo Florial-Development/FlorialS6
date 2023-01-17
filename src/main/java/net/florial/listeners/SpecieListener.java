@@ -23,7 +23,9 @@ public class SpecieListener implements Listener {
             data,
             data.getSpecieType()
         );
-    
+
+        data.refresh();
+
         Bukkit.getPluginManager().callEvent(e);
     }
     

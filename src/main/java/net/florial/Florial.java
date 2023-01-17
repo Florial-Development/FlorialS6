@@ -21,6 +21,7 @@ import net.florial.listeners.SpecieListener;
 import net.florial.listeners.ThirstListener;
 import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
+import net.florial.species.Species;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -49,27 +50,10 @@ public final class Florial extends JavaPlugin {
     @SneakyThrows
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-        setupCommands();
+
+        init();
 
         manager.invoke();
-
-
-        getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
-        getServer().getPluginManager().registerEvents(new SpecieListener(), this);
-        getServer().getPluginManager().registerEvents(new ThirstListener(), this);
-        getServer().getPluginManager().registerEvents(new ThirstManager(), this);
-        getServer().getPluginManager().registerEvents(new MobsListener(), this);
-
-        getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
-        getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
-        getServer().getPluginManager().registerEvents(new Wisps(EntityType.VEX), this);
-        getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
-
-        SpecieType.getAllSpecies().forEach(species -> {
-            if (species == null) return;
-            getServer().getPluginManager().registerEvents(species, this);
-        });
 
 
         FlorialDatabase.initializeDatabase();
@@ -82,6 +66,42 @@ public final class Florial extends JavaPlugin {
         for (PlayerData data : playerData.values()) data.save(false);
         FlorialDatabase.closeConnection();
         saveConfig();
+    }
+
+    private void init(){
+        saveDefaultConfig();
+        setupCommands();
+        setupListeners();
+        loadData();
+    }
+
+    private void loadData(){
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            FlorialDatabase.getPlayerData(p).thenAccept(playerData -> {
+                Florial.getPlayerData().put(p.getUniqueId(), playerData);
+            });}
+
+    }
+
+    private void setupListeners(){
+
+        getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
+        getServer().getPluginManager().registerEvents(new SpecieListener(), this);
+        getServer().getPluginManager().registerEvents(new ThirstListener(), this);
+        getServer().getPluginManager().registerEvents(new ThirstManager(), this);
+        getServer().getPluginManager().registerEvents(new MobsListener(), this);
+
+
+        getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
+        getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
+        getServer().getPluginManager().registerEvents(new Wisps(EntityType.WITCH), this);
+        getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
+
+        SpecieType.getAllSpecies().forEach(species -> {
+            if (species == null) return;
+            getServer().getPluginManager().registerEvents(species, this);
+        });
+
     }
 
     private void enableRecipes() {

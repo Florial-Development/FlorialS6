@@ -22,12 +22,14 @@ public class SpeciesWrapper {
 
         if (event.isCancelled()) return;
 
+        data.setSpecieId(species.getId());
+
         data.getSpecies().effects().forEach(effect -> {
-            data.getPlayer().removePotionEffect(effect);
+            data.getPlayer().removePotionEffect(effect.getType());
         });
 
-        data.setSpecieId(species.getId());
         data.refresh();
+
     }
 
     // Method to get the species of a player

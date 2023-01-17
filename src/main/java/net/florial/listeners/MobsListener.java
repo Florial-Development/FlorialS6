@@ -32,7 +32,7 @@ public class MobsListener implements Listener {
     private void CustomMobDeath(EntityDeathEvent e) {
         Entity ent = e.getEntity();
 
-        if (!(ent instanceof Hoglin) && (!(ent instanceof CaveSpider) && (!(ent instanceof Vex)) && (!(ent instanceof Ravager)))) return;
+        if (!(ent instanceof Hoglin) && (!(ent instanceof CaveSpider) && (!(ent instanceof Witch)) && (!(ent instanceof Ravager)))) return;
 
         MobDeathEvent eve = new MobDeathEvent(
                 ent.getType(),

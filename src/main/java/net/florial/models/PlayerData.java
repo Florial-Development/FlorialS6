@@ -4,6 +4,7 @@ import com.mongodb.lang.Nullable;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import lombok.Data;
+import net.florial.Florial;
 import net.florial.database.FlorialDatabase;
 import net.florial.skills.Skill;
 import net.florial.species.SpecieType;
@@ -70,9 +71,13 @@ public class PlayerData {
 
     @BsonIgnore
     public void refresh() {
-        for (PotionEffectType effect : getSpecies().effects()) {
-            getPlayer().addPotionEffect(new PotionEffect(effect, 20000000, 1, true, false));
-        }
+
+        if (getSpecies() == null) return;
+
+        Bukkit.getScheduler().runTaskLater(Florial.getInstance(), () -> {
+            for (PotionEffect effect : getSpecies().effects()) {
+            getPlayer().addPotionEffect(effect);}}, 70L);
+
     }
 
 }
