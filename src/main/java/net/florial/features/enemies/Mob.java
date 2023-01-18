@@ -54,7 +54,7 @@ public abstract class Mob implements Listener {
     @EventHandler
     public void spawnMyself(MobSpawnEvent event) {
 
-        if (!(event.getFormer().getType() != this.ireplace)) return;
+        if (event.getFormer().getType() != this.ireplace) return;
 
         Collection<Entity> aminear = event.getW().getNearbyEntitiesByType(this.entity.getEntityClass(), event.getLoc(), 15);
 

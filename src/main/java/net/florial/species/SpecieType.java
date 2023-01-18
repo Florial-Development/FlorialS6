@@ -36,7 +36,7 @@ public enum SpecieType {
     LYNX(18, null),
     BASILISK(19, null),
     NEKORYU(20, null),
-    COMPUTER(21, null);
+    WINDOWSIAN(21, null);
     //end
 
 
