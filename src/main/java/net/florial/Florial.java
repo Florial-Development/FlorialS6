@@ -2,10 +2,7 @@ package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
-import net.florial.commands.ChangeSpeciesCommand;
-import net.florial.commands.ChocolateerCommand;
-import net.florial.commands.NuzzleCommand;
-import net.florial.commands.SpeciesCheckCommand;
+import net.florial.commands.*;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.florial.database.FlorialDatabase;
@@ -140,6 +137,7 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
+        manager.registerCommand(new ChangeSkillsCommand());
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());
 

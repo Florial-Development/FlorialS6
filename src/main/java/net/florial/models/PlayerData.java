@@ -14,9 +14,8 @@ import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @Data
 @Entity("playerdata")
@@ -30,11 +29,13 @@ public class PlayerData {
     private int dna = 0;
     private int dnaXP = 0;
     private int specieId = 0;
+
+    private int event = 0;
     @Nullable
     String pronouns = "";
-    ArrayList<Skill> skills = new ArrayList<>();
 
-    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, ArrayList<Skill> skills) {
+    EnumMap<Skill, Integer> skills = new EnumMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
+    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, EnumMap<Skill,Integer> skills, int event) {
         this.UUID = uuid;
         this.flories = flories;
         this.dna = dna;
@@ -42,6 +43,7 @@ public class PlayerData {
         this.specieId = specieId;
         this.pronouns = pronouns;
         this.skills = skills;
+        this.event = event;
     }
 
     public PlayerData(String uuid) {
@@ -53,7 +55,7 @@ public class PlayerData {
     public SpecieType getSpecieType() {
         return SpecieType.fromID(specieId);
     }
-    
+
     public Species getSpecies() {
         return getSpecieType().getSpecie();
     }
