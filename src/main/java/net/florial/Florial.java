@@ -2,9 +2,12 @@ package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
-import net.florial.commands.*;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.florial.commands.ChangeSkillsCommand;
+import net.florial.commands.ChangeSpeciesCommand;
+import net.florial.commands.NuzzleCommand;
+import net.florial.commands.SpeciesCheckCommand;
 import net.florial.database.FlorialDatabase;
 import net.florial.features.chocolates.ChocolateEatListener;
 import net.florial.features.chocolates.ChocolateerCommand;
@@ -26,7 +29,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public final class Florial extends JavaPlugin {
 
@@ -43,6 +48,8 @@ public final class Florial extends JavaPlugin {
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
 
+    private static final ThirstManager ThirstManager = new ThirstManager();
+
 
     @SneakyThrows
     @Override
@@ -51,7 +58,6 @@ public final class Florial extends JavaPlugin {
         init();
 
         manager.invoke();
-
 
         FlorialDatabase.initializeDatabase();
         enableRecipes();
@@ -73,10 +79,10 @@ public final class Florial extends JavaPlugin {
     }
 
     private void loadData(){
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            FlorialDatabase.getPlayerData(p).thenAccept(playerData -> {
-                Florial.getPlayerData().put(p.getUniqueId(), playerData);
-            });}
+        if (!(Bukkit.getOnlinePlayers().size() > -1)) return;
+        for (Player p : Bukkit.getOnlinePlayers()) {FlorialDatabase.getPlayerData(p.getUniqueId()).thenAccept(playerData -> {
+            Florial.getPlayerData().put(p.getUniqueId(), playerData);});
+            ThirstManager.thirstRunnable(p);}
 
     }
 

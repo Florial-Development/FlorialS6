@@ -1,5 +1,7 @@
 package net.florial.skills;
 
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Property;
 import dev.morphia.annotations.Transient;
 import lombok.Getter;
 import lombok.Setter;

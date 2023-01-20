@@ -15,7 +15,7 @@ public class ChocolateEatListener implements Listener {
     @EventHandler
     public void eatChocolate(PlayerItemConsumeEvent e) {
 
-        if (!NBTEditor.contains(e.getItem(), "chocolate", "FlorialItemData")) return;
+        if (!NBTEditor.contains(e.getItem(), "Chocolate")) return;
 
         Player p = e.getPlayer();
         PlayerData data = Florial.getPlayerData().get(p.getUniqueId());

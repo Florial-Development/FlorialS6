@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListeners implements Listener {
 
+    private static ThirstManager ThirstManager = new ThirstManager();
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
@@ -20,12 +22,7 @@ public class PlayerListeners implements Listener {
            Florial.getPlayerData().put(p.getUniqueId(), playerData);
         });
 
-        if (Florial.getThirst().get(p.getUniqueId()) == null) Florial.getThirst().put(p.getUniqueId(), 20);
-
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Florial.getInstance(), () -> {
-            if (!p.isOnline()) return;
-            ThirstManager.updateThirst(p);
-            }, 35L, 35);
+        ThirstManager.thirstRunnable(p);
 
 
     }

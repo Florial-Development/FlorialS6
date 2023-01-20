@@ -2,12 +2,13 @@ package net.florial.features.chocolates;
 
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
-import io.github.rysefoxx.inventory.plugin.content.*;
+import io.github.rysefoxx.inventory.plugin.content.IntelligentItem;
+import io.github.rysefoxx.inventory.plugin.content.InventoryContents;
+import io.github.rysefoxx.inventory.plugin.content.InventoryProvider;
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -35,9 +36,7 @@ public class Chocolateer {
                                 CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE FILLING\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x15#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x16#ffa2c4 Sweet Berries\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .collect(Collectors.toList());
 
-                        ItemStack output = CustomItem.MakeItem(new ItemStack(Material.COOKIE), "#6A3A2F&lChocolate [EAT]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Eat it and get DNA XP.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false);
-                        NBTEditor.set(output, "chocolate", "FlorialItemData");
-
+                        final ItemStack output = NBTEditor.set(CustomItem.MakeItem(new ItemStack(Material.COOKIE), "#6A3A2F&lChocolate [EAT]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Eat it and get DNA XP.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), 1, "Chocolate");
 
                         contents.set(List.of(27,28,29), IntelligentItem.of(entries.get(2), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 15),
                                                 new ItemStack(Material.EGG, 32),
@@ -51,8 +50,8 @@ public class Chocolateer {
                                                 new ItemStack(Material.COCOA_BEANS, 32)),
                                         player, CustomItem.MakeItem(new ItemStack(Material.MUSIC_DISC_WAIT), "#6A3A2F&lChocolate Malt", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Use this to Make Chocolate.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false))));
 
-                        contents.set(List.of(39,40,41), IntelligentItem.of(entries.get(1), event -> chocolateering(List.of(new ItemStack(Material.MUSIC_DISC_11, 1),
-                                                new ItemStack(Material.MUSIC_DISC_WAIT, 1)),
+                        contents.set(List.of(39,40,41), IntelligentItem.of(entries.get(1), event -> chocolateering(List.of(entries.get(0),
+                                                entries.get(2)),
                                         player, output)));
                     }
                 })
@@ -73,7 +72,6 @@ public class Chocolateer {
             p.sendMessage(" You don't have the required items... : " + missing);
 
         }else{
-
             p.getInventory().addItem(output);
             p.playSound(p.getLocation(), Sound.BLOCK_MUD_BREAK, 1, 3);
             p.getInventory().removeItem(necessities.toArray(new ItemStack[necessities.size()]));

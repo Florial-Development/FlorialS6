@@ -15,7 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @Entity("playerdata")
@@ -34,8 +35,9 @@ public class PlayerData {
     @Nullable
     String pronouns = "";
 
-    EnumMap<Skill, Integer> skills = new EnumMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
-    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, EnumMap<Skill,Integer> skills, int event) {
+    HashMap<Skill, Integer> skills = new HashMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
+    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, int event) {
+
         this.UUID = uuid;
         this.flories = flories;
         this.dna = dna;
@@ -60,6 +62,18 @@ public class PlayerData {
         return getSpecieType().getSpecie();
     }
 
+    public int getDnaXP() {
+
+        DnaLVLup();
+        return dnaXP;
+    }
+
+    public int getDna() {
+        DnaLVLup();
+        return dna;
+    }
+
+
     @BsonIgnore
     public Player getPlayer() {
         return Bukkit.getPlayer(java.util.UUID.fromString(this.UUID));
@@ -80,6 +94,14 @@ public class PlayerData {
             for (PotionEffect effect : getSpecies().effects()) {
             getPlayer().addPotionEffect(effect);}}, 70L);
 
+    }
+
+    @BsonIgnore
+    private void DnaLVLup(){
+        if (!(dnaXP > 499)) return;
+        dnaXP = 0;
+        dna = dna+1;
+        
     }
 
 }

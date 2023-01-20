@@ -21,9 +21,17 @@ public class ChangeSkillsCommand extends BaseCommand {
 
         //test
 
+        Skill skill;
+
+        try { skill = Skill.valueOf(s.toUpperCase().replace(" ", "_")); }
+        catch (Exception e){
+            p.sendMessage("§cInvalid skill, skills are: " + Arrays.stream(Skill.values()).map(Enum::name).collect(Collectors.joining(", ")));
+            return;
+        }
+
         PlayerData data = Florial.getPlayerData().get(p.getUniqueId());
 
-        data.getSkills().put(Skill.SCENT, 3);
+        data.getSkills().put(skill, lvl);
 
     }
 }
