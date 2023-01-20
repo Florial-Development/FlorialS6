@@ -1,4 +1,4 @@
-package net.florial.menus;
+package net.florial.features.chocolates;
 
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
@@ -35,6 +35,9 @@ public class Chocolateer {
                                 CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE FILLING\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x15#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x16#ffa2c4 Sweet Berries\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .collect(Collectors.toList());
 
+                        ItemStack output = CustomItem.MakeItem(new ItemStack(Material.COOKIE), "#6A3A2F&lChocolate [EAT]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Eat it and get DNA XP.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false);
+                        NBTEditor.set(output, "chocolate", "FlorialItemData");
+
 
                         contents.set(List.of(27,28,29), IntelligentItem.of(entries.get(2), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 15),
                                                 new ItemStack(Material.EGG, 32),
@@ -50,7 +53,7 @@ public class Chocolateer {
 
                         contents.set(List.of(39,40,41), IntelligentItem.of(entries.get(1), event -> chocolateering(List.of(new ItemStack(Material.MUSIC_DISC_11, 1),
                                                 new ItemStack(Material.MUSIC_DISC_WAIT, 1)),
-                                        player, CustomItem.MakeItem(new ItemStack(Material.MUSIC_DISC_13), "#6A3A2F&lChocolate [EAT]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Eat it and get DNA XP.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false))));
+                                        player, output)));
                     }
                 })
                 .build(Florial.getInstance())

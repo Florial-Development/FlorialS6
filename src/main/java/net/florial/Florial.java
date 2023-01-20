@@ -6,7 +6,8 @@ import net.florial.commands.*;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.florial.database.FlorialDatabase;
-import net.florial.features.enemies.Mob;
+import net.florial.features.chocolates.ChocolateEatListener;
+import net.florial.features.chocolates.ChocolateerCommand;
 import net.florial.features.enemies.impl.Boar;
 import net.florial.features.enemies.impl.Crawlies;
 import net.florial.features.enemies.impl.Snapper;
@@ -18,7 +19,6 @@ import net.florial.listeners.SpecieListener;
 import net.florial.listeners.ThirstListener;
 import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
-import net.florial.species.Species;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -93,6 +93,8 @@ public final class Florial extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
         getServer().getPluginManager().registerEvents(new Wisps(EntityType.WITCH), this);
         getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
+
+        getServer().getPluginManager().registerEvents(new ChocolateEatListener(), this);
 
         SpecieType.getAllSpecies().forEach(species -> {
             if (species == null) return;
