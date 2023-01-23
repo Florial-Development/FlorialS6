@@ -15,6 +15,7 @@ import net.florial.features.enemies.impl.Boar;
 import net.florial.features.enemies.impl.Crawlies;
 import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
+import net.florial.features.skills.SkillsCommand;
 import net.florial.features.thirst.ThirstManager;
 import net.florial.listeners.MobsListener;
 import net.florial.listeners.PlayerListeners;
@@ -148,6 +149,7 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new ChangeSkillsCommand());
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());
+        manager.registerCommand(new SkillsCommand());
 
     }
 

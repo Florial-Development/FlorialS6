@@ -45,6 +45,10 @@ public abstract class Species implements Listener {
         return new HashSet<>();
     }
 
+    public Set<String> descriptions() {
+        return new HashSet<>();
+    }
+
 
     public void apply(Player player) {}
 

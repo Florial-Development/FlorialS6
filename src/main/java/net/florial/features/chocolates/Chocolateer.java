@@ -21,8 +21,6 @@ import java.util.stream.Stream;
 
 public class Chocolateer {
 
-    //test
-
     public void chocolaterMenu(Player p) {
 
         RyseInventory.builder()

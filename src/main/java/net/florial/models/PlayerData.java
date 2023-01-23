@@ -6,7 +6,7 @@ import dev.morphia.annotations.Id;
 import lombok.Data;
 import net.florial.Florial;
 import net.florial.database.FlorialDatabase;
-import net.florial.skills.Skill;
+import net.florial.features.skills.Skill;
 import net.florial.species.SpecieType;
 import net.florial.species.Species;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
@@ -36,6 +36,7 @@ public class PlayerData {
     String pronouns = "";
 
     HashMap<Skill, Integer> skills = new HashMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
+
     public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, int event) {
 
         this.UUID = uuid;
@@ -62,18 +63,6 @@ public class PlayerData {
         return getSpecieType().getSpecie();
     }
 
-    public int getDnaXP() {
-
-        DnaLVLup();
-        return dnaXP;
-    }
-
-    public int getDna() {
-        DnaLVLup();
-        return dna;
-    }
-
-
     @BsonIgnore
     public Player getPlayer() {
         return Bukkit.getPlayer(java.util.UUID.fromString(this.UUID));
@@ -96,12 +85,24 @@ public class PlayerData {
 
     }
 
+    // dna section
+
+    public int getDnaXP() {
+        DnaLVLup();
+        return dnaXP;
+    }
+
+    public int getDna() {
+        DnaLVLup();
+        return dna;
+    }
+
     @BsonIgnore
     private void DnaLVLup(){
         if (!(dnaXP > 499)) return;
         dnaXP = 0;
         dna = dna+1;
-        
+
     }
 
 }

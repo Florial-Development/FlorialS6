@@ -35,7 +35,7 @@ public class ThirstManager implements Listener {
         } else {
             if (!p.hasPotionEffect(PotionEffectType.WITHER))
                 p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER,
-                        60, 1, false, false, true));
+                        2400, 1, false, false, true));
         }
     }
 
@@ -75,7 +75,7 @@ public class ThirstManager implements Listener {
 
         if (getThirst(p) == 20)
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
-                    60, 1, false, false, true));
+                    6000, 1, false, false, true));
     }
 
     private void deHydrate(Player p, Integer amount){
