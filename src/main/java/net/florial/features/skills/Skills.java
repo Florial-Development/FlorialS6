@@ -50,17 +50,17 @@ public class Skills {
                                 .collect(Collectors.toList());
 
 
-                        contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                       // contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p,0,data,Skill.SPECIFIC)));
 
-                        contents.set(List.of(18,19), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                        contents.set(List.of(18,19), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SCENT)));
 
-                        contents.set(List.of(20,21), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                        contents.set(List.of(20,21), IntelligentItem.of(entries.get(0), event -> skill(p,30,data,Skill.STRENGTH)));
 
-                        contents.set(List.of(22), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                        contents.set(List.of(22), IntelligentItem.of(entries.get(0), event -> skill(p,50,data,Skill.RESISTANCE)));
 
-                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(0), event -> skill(p,30,data,Skill.SURVIVAL)));
 
-                        contents.set(List.of(25,26), IntelligentItem.of(entries.get(0), event -> skill(p)));
+                        contents.set(List.of(25,26), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SPECIFIC)));
 
                     }
                 })
@@ -69,7 +69,23 @@ public class Skills {
 
     }
 
-    public void skill(Player p){
+    public void skill(Player p, int i, PlayerData data, Skill skill){
+
+        int dna = data.getDna();
+
+        if (dna >= i) {
+
+            data.setDna(dna-i);
+
+            data.getSkills().put(skill, data.getSkills().get(skill) + 1);
+
+            p.sendMessage("Successfully upgraded!");
+
+        } else {
+            p.sendMessage("Not enough DNA");
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+
+        }
 
         p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1);
 
