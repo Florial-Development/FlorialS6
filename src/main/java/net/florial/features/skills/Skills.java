@@ -69,7 +69,7 @@ public class Skills {
 
     }
 
-    public void skill(Player p, int i, PlayerData data, Skill skill){
+    private static void skill(Player p, int i, PlayerData data, Skill skill){
 
         int dna = data.getDna();
 
@@ -92,7 +92,7 @@ public class Skills {
 
     }
 
-    private String format(List<String> iterations){
+    private static String format(List<String> iterations){
         return "  #ff79a1&l︳ " + iterations.get(0) +
             " SKILL\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙\n #ffa2c4&l︳ • YOUR LEVEL: #ffa2c4 "
             + iterations.get(1) + "\n #ff79a1&l︳  INCREASE BY:\n #ffa2c4&l︳ •#ffa2c4 "
