@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,6 +84,17 @@ public class PlayerData {
             for (PotionEffect effect : getSpecies().effects()) {
             getPlayer().addPotionEffect(effect);}}, 70L);
 
+    }
+
+    public static int getFieldValue(PlayerData playerData, String fieldName) {
+        try {
+            Field field = playerData.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (int) field.get(playerData);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     // dna section

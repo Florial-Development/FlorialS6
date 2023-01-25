@@ -7,6 +7,7 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.ReplaceOptions;
@@ -16,13 +17,21 @@ import lombok.val;
 import net.florial.Florial;
 import net.florial.models.PlayerData;
 import net.florial.utils.GeneralUtils;
+import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import static net.florial.models.PlayerData.getFieldValue;
 
 public class FlorialDatabase {
 
@@ -97,6 +106,29 @@ public class FlorialDatabase {
             }
         });
     }
+
+    public static List PlayerDataLeaderboard(Player p, String field, boolean descending) {
+
+        List<PlayerData> playerList = new ArrayList<>();
+
+        datastore.find(PlayerData.class)
+                .filter(Filters.gte(field, 0))
+                .iterator()
+                .forEachRemaining(playerList::add);
+
+        playerList.sort((PlayerData p1, PlayerData p2) -> {
+            if(descending) return getFieldValue(p2, field) - getFieldValue(p1, field);
+            else return getFieldValue(p1, field) - getFieldValue(p2, field);
+        });
+        List<PlayerData> topPlayers = playerList.subList(0, Math.min(playerList.size(), 10));
+        for (PlayerData playerData : topPlayers) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUUID()));
+            p.sendMessage((offlinePlayer.getName() + " :  Flories: " + getFieldValue(playerData, field)));
+        }
+
+        return topPlayers;
+    }
+
 
     public static void createNewPlayerData(PlayerData data) {
         datastore.replace(data, new ReplaceOptions().upsert(true));
