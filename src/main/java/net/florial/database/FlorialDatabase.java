@@ -107,26 +107,30 @@ public class FlorialDatabase {
         });
     }
 
-    public static List PlayerDataLeaderboard(Player p, String field, boolean descending) {
+    public static void PlayerDataLeaderboard(Player p, String field, boolean descending) {
 
-        List<PlayerData> playerList = new ArrayList<>();
+        GeneralUtils.runAsync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<PlayerData> playerList = new ArrayList<>();
 
-        datastore.find(PlayerData.class)
-                .filter(Filters.gte(field, 0))
-                .iterator()
-                .forEachRemaining(playerList::add);
+                datastore.find(PlayerData.class)
+                        .filter(Filters.gte(field, 0))
+                        .iterator()
+                        .forEachRemaining(playerList::add);
 
-        playerList.sort((PlayerData p1, PlayerData p2) -> {
-            if(descending) return getFieldValue(p2, field) - getFieldValue(p1, field);
-            else return getFieldValue(p1, field) - getFieldValue(p2, field);
+                playerList.sort((PlayerData p1, PlayerData p2) -> {
+                    if (descending) return getFieldValue(p2, field) - getFieldValue(p1, field);
+                    else return getFieldValue(p1, field) - getFieldValue(p2, field);
+                });
+                List<PlayerData> topPlayers = playerList.subList(0, Math.min(playerList.size(), 10));
+                for (PlayerData playerData : topPlayers) {
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUUID()));
+                    p.sendMessage((offlinePlayer.getName() + " :  " + field + ": " + getFieldValue(playerData, field)));
+                }
+            }
         });
-        List<PlayerData> topPlayers = playerList.subList(0, Math.min(playerList.size(), 10));
-        for (PlayerData playerData : topPlayers) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUUID()));
-            p.sendMessage((offlinePlayer.getName() + " :  Flories: " + getFieldValue(playerData, field)));
-        }
 
-        return topPlayers;
     }
 
 

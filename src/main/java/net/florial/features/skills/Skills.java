@@ -45,10 +45,21 @@ public class Skills {
                         }
 
                         List<ItemStack> entries = Stream.of(CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                "SCENT", "" + data.getSkills().get(Skill.SCENT), "#ffa2c4 25 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
-                                                "lower cooldown : stronger skill")), false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
+                                                "SCENT", "" + data.getSkills().get(Skill.SCENT), "#ffa2c4 25 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
+                                                "lower cooldown : stronger skill")), false),
+                                        CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "STRENGTH", "" + data.getSkills().get(Skill.STRENGTH), "#ffa2c4 30 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
+                                                "Increase in Strength")), false),
+                                        CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "RESISTANCE", "" + data.getSkills().get(Skill.RESISTANCE), "#ffa2c4 50 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
+                                                "Increase in Resistance")), false),
+                                        CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "SURVIVAL", "" + data.getSkills().get(Skill.SURVIVAL), "#ffa2c4 25 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
+                                                "More health : higher dmg")), false),
+                                        CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "" + descriptions.get(0), "" + data.getSkills().get(Skill.SPECIFIC), "#ffa2c4 25 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
+                                                "" + descriptions.get(1))), false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .collect(Collectors.toList());
-
 
                        // contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p,0,data,Skill.SPECIFIC)));
 
@@ -58,7 +69,7 @@ public class Skills {
 
                         contents.set(List.of(22), IntelligentItem.of(entries.get(0), event -> skill(p,50,data,Skill.RESISTANCE)));
 
-                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(0), event -> skill(p,30,data,Skill.SURVIVAL)));
+                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(0), event -> p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1)));
 
                         contents.set(List.of(25,26), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SPECIFIC)));
 
