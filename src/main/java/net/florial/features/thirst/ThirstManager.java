@@ -28,7 +28,7 @@ public class ThirstManager implements Listener {
 
     @EventHandler
     public void DehydrateSelf(FoodLevelChangeEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player) || (!(event.getEntity().getFoodLevel() > event.getFoodLevel()))) return;
         Player p = (Player) event.getEntity();
         if (getThirst(p) > 0) {
             deHydrate(p, 1);

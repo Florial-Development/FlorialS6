@@ -65,13 +65,13 @@ public class Skills {
 
                         contents.set(List.of(18,19), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SCENT)));
 
-                        contents.set(List.of(20,21), IntelligentItem.of(entries.get(0), event -> skill(p,30,data,Skill.STRENGTH)));
+                        contents.set(List.of(20,21), IntelligentItem.of(entries.get(1), event -> skill(p,30,data,Skill.STRENGTH)));
 
-                        contents.set(List.of(22), IntelligentItem.of(entries.get(0), event -> skill(p,50,data,Skill.RESISTANCE)));
+                        contents.set(List.of(22), IntelligentItem.of(entries.get(2), event -> skill(p,50,data,Skill.RESISTANCE)));
 
-                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(0), event -> p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1)));
+                        contents.set(List.of(23,24), IntelligentItem.of(entries.get(3), event -> p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1)));
 
-                        contents.set(List.of(25,26), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SPECIFIC)));
+                        contents.set(List.of(25,26), IntelligentItem.of(entries.get(4), event -> skill(p,25,data,Skill.SPECIFIC)));
 
                     }
                 })

@@ -46,6 +46,8 @@ public class TrackingUI {
 
                         int scent = data.getSkills().get(Skill.SCENT);
 
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_BREATH, 1, 1);
+
                         List<ItemStack> entries = Stream.of(CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI3MmVmYmE5NGQzZWM3OWQyM2M3ODkyNjk2NzQ5MTEyNWM5YTEwM2VlZDAwZDM2MDJlOTg0MTk1NTBlNTViYyJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "COW", "Plains, Snowy", "1"), scent), false),
                                         CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0NGZiOGEwODA1N2U0YTcyNzhhNmM1YWEyY2I2OTJmMmU3Y2ZlYTk2MGM2OGZjMGQ0ZDJlMjZlODhkZDM1OSJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
@@ -96,10 +98,12 @@ public class TrackingUI {
                 LivingEntity them = (LivingEntity) MobSpawn.spawnMob(e, w, new Location(w, x, loc.getY(), z));
 
                 PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 4, false, false, true);
-                PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 4, false, false, true);
+                PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 3, false, false, true);
                 PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 2400, 1, false, false, true);
 
-                them.addPotionEffect((PotionEffect) List.of(resist,speed,glow));
+                for (PotionEffect effect : List.of(resist, speed, glow)) {them.addPotionEffect(effect);}
+
+                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_BREATH, 1, 1);
 
             } else {
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);

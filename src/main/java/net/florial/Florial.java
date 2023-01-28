@@ -14,10 +14,7 @@ import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
 import net.florial.features.skills.SkillsCommand;
 import net.florial.features.thirst.ThirstManager;
-import net.florial.listeners.MobsListener;
-import net.florial.listeners.PlayerListeners;
-import net.florial.listeners.SpecieListener;
-import net.florial.listeners.ThirstListener;
+import net.florial.listeners.*;
 import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
 import org.bukkit.Bukkit;
@@ -91,6 +88,7 @@ public final class Florial extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ThirstListener(), this);
         getServer().getPluginManager().registerEvents(new ThirstManager(), this);
         getServer().getPluginManager().registerEvents(new MobsListener(), this);
+        getServer().getPluginManager().registerEvents(new AnimalListener(), this);
 
 
         getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
@@ -145,6 +143,7 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new ChangeSpeciesCommand());
         manager.registerCommand(new ChangeFlories());
         manager.registerCommand(new LeaderboardCommand());
+        manager.registerCommand(new showScentUICommand());
         manager.registerCommand(new ChangeSkillsCommand());
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());
