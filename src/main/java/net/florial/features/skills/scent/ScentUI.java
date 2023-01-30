@@ -8,7 +8,6 @@ import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,9 +18,8 @@ import java.util.stream.Stream;
 
 public class ScentUI {
 
-    // work in progress
-
-    TrackingUI TrackingUI = new TrackingUI();
+    private static final AnimalTrackingUI animaltrackingUI = new AnimalTrackingUI();
+    private static final OreTrackingUI oretrackingUI = new OreTrackingUI();
 
     public void scentUI(Player p) {
 
@@ -36,9 +34,9 @@ public class ScentUI {
                                 .collect(Collectors.toList());
 
 
-                        contents.set(List.of(37, 38, 28, 29), IntelligentItem.of(entries.get(0), event -> TrackingUI.trackingUI(p, true)));
+                        contents.set(List.of(37, 38, 28, 29), IntelligentItem.of(entries.get(0), event -> animaltrackingUI.trackingUI(p)));
 
-                        contents.set(List.of(32, 33, 41, 42, 43, 34), IntelligentItem.of(entries.get(1), event -> TrackingUI.trackingUI(p, false)));
+                        contents.set(List.of(32, 33, 41, 42, 43, 34), IntelligentItem.of(entries.get(1), event -> oretrackingUI.trackingUIOre(p)));
 
 
                     }

@@ -31,7 +31,7 @@ public class AnimalListener implements Listener {
     }
 
     private static void addPotionEffects(LivingEntity e) {
-        PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 4, false, false, true);
+        PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 2, false, false, true);
         PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 3, false, false, true);
 
         for (PotionEffect effect : List.of(resist, speed)) {e.addPotionEffect(effect);}
