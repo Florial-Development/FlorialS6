@@ -27,6 +27,8 @@ import java.util.stream.Stream;
 
 public class AnimalTrackingUI {
 
+    private static final Random RANDOM = new Random();
+
     public void trackingUI(Player p) {
 
         final GetCustomSkull GetCustomSkull = new GetCustomSkull();
@@ -57,7 +59,7 @@ public class AnimalTrackingUI {
                                     .collect(Collectors.toList());
 
                         contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> trackdown(EntityType.COW, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
-                                        Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 1)));
+                                        Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 0)));
                         contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> trackdown(EntityType.SHEEP, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
                                 Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 2)));
                         contents.set(List.of(29), IntelligentItem.of(entries.get(2), event -> trackdown(EntityType.CHICKEN, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
@@ -76,40 +78,41 @@ public class AnimalTrackingUI {
     }
 
     private static void trackdown(EntityType e, List<Biome> acceptable, Player p, int scent, int required){
-        if (scent > required) return;
 
         Location loc = p.getLocation();
         World w = loc.getWorld();
-        Random random = new Random();
 
-        if (acceptable.contains(loc.getBlock().getBiome())) {
-            int chance = 20 + (scent * 10);
-            boolean chanceResult = GetChance.getChance(chance);
-
-            Sound sound;
-            if (chanceResult) {
-                sound = Sound.BLOCK_NOTE_BLOCK_BASS;
-            } else {
-                double x = loc.getX() + (random.nextDouble() * 20) - 10;
-                double z = loc.getZ() + (random.nextDouble() * 20) - 10;
-
-                LivingEntity them = (LivingEntity) MobSpawn.spawnMob(e, w, new Location(w, x, loc.getY(), z));
-
-                PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 2, false, false, true);
-                PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 3, false, false, true);
-                PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 2400, 1, false, false, true);
-
-                for (PotionEffect effect : List.of(resist, speed, glow)) {
-                    them.addPotionEffect(effect);
-                }
-
-                sound = Sound.ENTITY_PLAYER_BREATH;
-            }
-            p.playSound(p.getLocation(), sound, 1, 1);
-        } else {
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+        if (scent < required) {
+            p.playSound(loc, Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+            p.sendMessage("You need Scent level " + required + " for this, but you only have " + scent);
+            return;
         }
-        p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1);
+
+        if (!acceptable.contains(loc.getBlock().getBiome())){
+            p.playSound(loc, Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+            p.sendMessage("You are not in the correct biome.");
+            return;
+        }
+        int chance = 20 + (scent * 10);
+        if (GetChance.getChance(chance)) {
+            p.playSound(loc, Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+            return;
+        }
+
+        double x = loc.getX() + (RANDOM.nextDouble() * 20) - 10;
+        double z = loc.getZ() + (RANDOM.nextDouble() * 20) - 10;
+
+        LivingEntity them = (LivingEntity) MobSpawn.spawnMob(e, w, new Location(w, x, loc.getY(), z));
+
+        PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 2, false, false, true);
+        PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 3, false, false, true);
+        PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 2400, 1, false, false, true);
+
+        for (PotionEffect effect : List.of(resist, speed, glow)) {them.addPotionEffect(effect);}
+
+        p.playSound(loc, Sound.ENTITY_PLAYER_BREATH, 1, 1);
+
+
     }
 
     private static String format(List<String> iterations, int scent){

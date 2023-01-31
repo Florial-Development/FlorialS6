@@ -46,13 +46,13 @@ public class OreTrackingUI {
                                                 "IRON", "2"), scent), false),
                                         CustomItem.MakeItem(new ItemStack(Material.EMERALD_ORE), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "EMERALD", "3"), scent), false),
-                                        CustomItem.MakeItem(new ItemStack(Material.LAPIS_LAZULI), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                        CustomItem.MakeItem(new ItemStack(Material.LAPIS_ORE), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "LAPIS", "4"), scent), false),
                                         CustomItem.MakeItem(new ItemStack(Material.DIAMOND_ORE), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "DIAMOND", "5"), scent), false))
                                 .collect(Collectors.toList());
 
-                        contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> oreLocate(Material.COAL_ORE, p, scent, 1)));
+                        contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> oreLocate(Material.COAL_ORE, p, scent, 0)));
                         contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> oreLocate(Material.IRON_ORE, p, scent, 2)));
                         contents.set(List.of(29), IntelligentItem.of(entries.get(2), event -> oreLocate(Material.EMERALD_ORE, p, scent, 3)));
                         contents.set(List.of(30), IntelligentItem.of(entries.get(3), event -> oreLocate(Material.LAPIS_LAZULI, p, scent, 4)));
@@ -67,11 +67,21 @@ public class OreTrackingUI {
     }
 
     private static void oreLocate(Material mat, Player p, int scent, int required) {
-        if (scent < required) return;
+        Sound sound;
 
-        int nearby = MaterialDetector.detectMaterial(p, mat, scent*5);
+        if (scent >= required) {
 
-        p.sendMessage("Amount Nearby: " + nearby);
+            int nearby = MaterialDetector.detectMaterial(p, mat, scent*5);
+
+            p.sendMessage("Amount Nearby: " + nearby);
+            sound = Sound.ENTITY_PLAYER_BREATH;
+
+        } else {
+            sound = Sound.BLOCK_NOTE_BLOCK_BASS;
+            p.sendMessage("You need Scent level " +  required + " for this, but you only have " + scent);
+        }
+        p.playSound(p.getLocation(), sound, 1, 1);
+
     }
 
 

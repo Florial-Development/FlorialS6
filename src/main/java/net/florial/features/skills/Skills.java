@@ -80,27 +80,27 @@ public class Skills {
 
     }
 
-    private static void skill(Player p, int i, PlayerData data, Skill skill){
-
+    private static void skill(Player p, int i, PlayerData data, Skill skill) {
         int dna = data.getDna();
+        Sound sound;
 
-        if (dna >= i) {
+        if (dna < i) {
+            p.sendMessage("Not enough DNA");
+            sound = Sound.BLOCK_NOTE_BLOCK_BASS;
 
-            data.setDna(dna-i);
-
-            data.getSkills().put(skill, data.getSkills().get(skill) + 1);
-
-            p.sendMessage("Successfully upgraded!");
+        } else if (data.getSkills().get(skill) >= 5) {
+            p.sendMessage("Skill is maxed.");
+            sound = Sound.BLOCK_NOTE_BLOCK_BASS;
 
         } else {
-            p.sendMessage("Not enough DNA");
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
 
+            data.setDna(dna - i);
+            data.getSkills().put(skill, data.getSkills().get(skill) + 1);
+            p.sendMessage("Successfully upgraded!");
+            sound = Sound.BLOCK_AMETHYST_BLOCK_CHIME;
         }
-
-        p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1);
-
-
+        p.playSound(p.getLocation(), sound, 1, 1);
+        p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 2, 1);
     }
 
     private static String format(List<String> iterations){

@@ -22,11 +22,4 @@ public enum Skill {
         this.lvl = lvl;
     }
 
-    public static Skill fromID(int skill) {
-        for (Skill e : values())
-            if (e.skill == skill) return e;
-        
-        return null;
-    }
-
 }
