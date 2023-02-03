@@ -143,7 +143,7 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new ChangeSpeciesCommand());
         manager.registerCommand(new ChangeFlories());
         manager.registerCommand(new LeaderboardCommand());
-        manager.registerCommand(new showScentUICommand());
+        manager.registerCommand(new ShowScentUICommand());
         manager.registerCommand(new ChangeSkillsCommand());
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());

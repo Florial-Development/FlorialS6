@@ -25,10 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static net.florial.models.PlayerData.getFieldValue;
@@ -107,13 +104,14 @@ public class FlorialDatabase {
         });
     }
 
-    public static void PlayerDataLeaderboard(Player p, String field, boolean descending) {
+    // TODO: Make this return a sorted list
+    public static CompletableFuture<List<PlayerData>> sortDataByField(String field, boolean descending, int limit) {
 
+        CompletableFuture<List<PlayerData>> future = new CompletableFuture<>();
         GeneralUtils.runAsync(new BukkitRunnable() {
             @Override
             public void run() {
                 List<PlayerData> playerList = new ArrayList<>();
-
                 datastore.find(PlayerData.class)
                         .filter(Filters.gte(field, 0))
                         .iterator()
@@ -123,14 +121,14 @@ public class FlorialDatabase {
                     if (descending) return getFieldValue(p2, field) - getFieldValue(p1, field);
                     else return getFieldValue(p1, field) - getFieldValue(p2, field);
                 });
-                List<PlayerData> topPlayers = playerList.subList(0, Math.min(playerList.size(), 10));
-                for (PlayerData playerData : topPlayers) {
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUUID()));
-                    p.sendMessage((offlinePlayer.getName() + " :  " + field + ": " + getFieldValue(playerData, field)));
-                }
+                future.complete(playerList.subList(0, limit));
             }
         });
+        return future;
+    }
 
+    public static CompletableFuture<List<PlayerData>> sortDataByField(String field, boolean descending) {
+        return sortDataByField(field, descending, 10);
     }
 
 

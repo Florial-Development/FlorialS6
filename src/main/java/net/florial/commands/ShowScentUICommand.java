@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.Default;
 import net.florial.features.skills.scent.ScentUI;
 import org.bukkit.entity.Player;
 
-public class showScentUICommand extends BaseCommand {
+public class ShowScentUICommand extends BaseCommand {
 
     ScentUI ScentUI = new ScentUI();
 
