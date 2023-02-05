@@ -15,8 +15,9 @@ public class LeaderboardCommand extends BaseCommand {
         @Default
         public static void onlb(Player player, Player target) {
 
-            FlorialDatabase.PlayerDataLeaderboard(player, "flories", true);
-
+            FlorialDatabase.fetchBoard("flories", true, result -> {
+                player.sendMessage(String.join("\n", result));
+            });
 
         }
     }

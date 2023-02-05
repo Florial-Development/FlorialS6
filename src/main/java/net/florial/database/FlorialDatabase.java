@@ -7,7 +7,6 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Sorts;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.ReplaceOptions;
@@ -17,16 +16,18 @@ import lombok.val;
 import net.florial.Florial;
 import net.florial.models.PlayerData;
 import net.florial.utils.GeneralUtils;
-import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static net.florial.models.PlayerData.getFieldValue;
 
@@ -104,10 +105,10 @@ public class FlorialDatabase {
         });
     }
 
-    // TODO: Make this return a sorted list
-    public static CompletableFuture<List<PlayerData>> sortDataByField(String field, boolean descending, int limit) {
+    public static CompletableFuture<List<String>> sortDataByField(String field, boolean descending, int limit) {
 
-        CompletableFuture<List<PlayerData>> future = new CompletableFuture<>();
+        CompletableFuture<List<String>> future = new CompletableFuture<>();
+
         GeneralUtils.runAsync(new BukkitRunnable() {
             @Override
             public void run() {
@@ -121,16 +122,26 @@ public class FlorialDatabase {
                     if (descending) return getFieldValue(p2, field) - getFieldValue(p1, field);
                     else return getFieldValue(p1, field) - getFieldValue(p2, field);
                 });
-                future.complete(playerList.subList(0, limit));
+
+                List<String> sortedList = playerList.subList(0, limit)
+                        .stream()
+                        .map(playerData -> {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerData.getUUID()));
+                            return offlinePlayer.getName() + ": " + getFieldValue(playerData, field);
+                        })
+                        .collect(Collectors.toList());
+
+                future.complete(sortedList);
             }
+
         });
         return future;
+
     }
 
-    public static CompletableFuture<List<PlayerData>> sortDataByField(String field, boolean descending) {
-        return sortDataByField(field, descending, 10);
+    public static void fetchBoard(String field, boolean descending, Consumer<List<String>> callback){
+        sortDataByField(field, descending, 10).thenAccept(callback);
     }
-
 
     public static void createNewPlayerData(PlayerData data) {
         datastore.replace(data, new ReplaceOptions().upsert(true));
