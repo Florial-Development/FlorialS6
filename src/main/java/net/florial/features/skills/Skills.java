@@ -59,7 +59,7 @@ public class Skills {
                                         CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "" + descriptions.get(0), "" + data.getSkills().get(Skill.SPECIFIC), "#ffa2c4 25 #9ECEFF&lD#FFC2DA&lN#9ECEFF&lA",
                                                 "" + descriptions.get(1))), false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
-                                .collect(Collectors.toList());
+                                .toList();
 
                        // contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p,0,data,Skill.SPECIFIC)));
 

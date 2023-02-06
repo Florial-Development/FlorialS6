@@ -31,7 +31,7 @@ public class ScentUI {
                     public void init(Player player, InventoryContents contents) {
 
                         List<ItemStack> entries = Stream.of(CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ Animals\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ Ores\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
-                                .collect(Collectors.toList());
+                                .toList();
 
 
                         contents.set(List.of(37, 38, 28, 29), IntelligentItem.of(entries.get(0), event -> animaltrackingUI.trackingUI(p)));

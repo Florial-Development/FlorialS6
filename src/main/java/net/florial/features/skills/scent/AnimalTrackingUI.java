@@ -9,6 +9,7 @@ import net.florial.Florial;
 import net.florial.features.skills.Skill;
 import net.florial.models.PlayerData;
 import net.florial.utils.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -26,8 +27,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AnimalTrackingUI {
-
-    private static final Random RANDOM = new Random();
 
     public void trackingUI(Player p) {
 
@@ -56,18 +55,18 @@ public class AnimalTrackingUI {
                                                     "HARE", "Plains, Deserts, Forests, Snowy", "4"), scent), false),
                                             CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzljMjI4ZDc4ZTM5NTUwMGJjNTRlOGU0NWU5ODExYWY4YzllYTU4MDQ1ZDcyZmE2ZjA5OTIxZGE1N2UwNTViNCJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                     "HOG", "Forests, Jungle", "5"), scent), false))
-                                    .collect(Collectors.toList());
+                                .collect(Collectors.toList());
 
-                        contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> trackdown(EntityType.COW, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
+                        contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> trackDown(EntityType.COW, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
                                         Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 0)));
-                        contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> trackdown(EntityType.SHEEP, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
+                        contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> trackDown(EntityType.SHEEP, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
                                 Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 2)));
-                        contents.set(List.of(29), IntelligentItem.of(entries.get(2), event -> trackdown(EntityType.CHICKEN, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
+                        contents.set(List.of(29), IntelligentItem.of(entries.get(2), event -> trackDown(EntityType.CHICKEN, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
                                 Biome.SUNFLOWER_PLAINS,Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST), p, scent, 3)));
-                        contents.set(List.of(30), IntelligentItem.of(entries.get(3), event -> trackdown(EntityType.RABBIT, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
+                        contents.set(List.of(30), IntelligentItem.of(entries.get(3), event -> trackDown(EntityType.RABBIT, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
                                 Biome.SUNFLOWER_PLAINS,Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST,Biome.DESERT,Biome.SNOWY_PLAINS,
                         Biome.SNOWY_SLOPES,Biome.SNOWY_TAIGA), p, scent, 4)));
-                        contents.set(List.of(31), IntelligentItem.of(entries.get(4), event -> trackdown(EntityType.PIG, List.of(Biome.FLOWER_FOREST,
+                        contents.set(List.of(31), IntelligentItem.of(entries.get(4), event -> trackDown(EntityType.PIG, List.of(Biome.FLOWER_FOREST,
                                 Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST,Biome.DESERT), p, scent, 5)));
 
                     }
@@ -77,7 +76,7 @@ public class AnimalTrackingUI {
 
     }
 
-    private static void trackdown(EntityType e, List<Biome> acceptable, Player p, int scent, int required){
+    private static void trackDown(EntityType e, List<Biome> acceptable, Player p, int scent, int required){
 
         Location loc = p.getLocation();
         World w = loc.getWorld();
@@ -99,10 +98,13 @@ public class AnimalTrackingUI {
             return;
         }
 
-        double x = loc.getX() + (RANDOM.nextDouble() * 20) - 10;
-        double z = loc.getZ() + (RANDOM.nextDouble() * 20) - 10;
+        double x = loc.getX() + (Math.random() * 25 + 15) * (Math.random() < 0.5 ? -1 : 1);
+        double z = loc.getZ() + (Math.random() * 25 + 15) * (Math.random() < 0.5 ? -1 : 1);
+        Location spawnLoc = new Location(loc.getWorld(), x, loc.getWorld().getHighestBlockYAt((int)x + 1, (int)z), z);
 
-        LivingEntity them = (LivingEntity) MobSpawn.spawnMob(e, w, new Location(w, x, loc.getY(), z));
+
+        LivingEntity them = (LivingEntity) MobSpawn.spawnMob(e, w, spawnLoc);
+
 
         PotionEffect resist = new PotionEffect(PotionEffectType.SPEED, 1000000, 2, false, false, true);
         PotionEffect speed = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 3, false, false, true);
@@ -119,9 +121,11 @@ public class AnimalTrackingUI {
         int chance = 20+(scent*10);
         int cooldown = 60-(scent*10);
         return "  #ff79a1&l︳ " + iterations.get(0) +
-                "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙\n #ffa2c4&l︳ • REQUIRES: #ffa2c4\n #ffa2c4︳ " + iterations.get(1) + "\n #ffa2c4&l︳ • CHANCE: #ffa2c4 " + chance
-                + "\n #ffa2c4&l︳ • SCENT LVL: #ffa2c4 "
-                + iterations.get(2) + "\n #ffa2c4&l︳ • COOLDOWN: #ffa2c4 " + cooldown + "\n #ffa2c4&l︳ • [CLICK HERE]" +
+                "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙\n #ffa2c4&l︳ • REQUIRES: #ffa2c4\n #ffa2c4︳ "
+                + iterations.get(1) + "\n #ffa2c4&l︳ • CHANCE: #ffa2c4 "
+                + chance + "\n #ffa2c4&l︳ • SCENT LVL: #ffa2c4 "
+                + iterations.get(2) + "\n #ffa2c4&l︳ • COOLDOWN: #ffa2c4 " 
+                + cooldown + "\n #ffa2c4&l︳ • [CLICK HERE]" +
                 "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙";}
 
 }

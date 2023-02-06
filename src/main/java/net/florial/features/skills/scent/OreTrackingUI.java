@@ -50,7 +50,7 @@ public class OreTrackingUI {
                                                 "LAPIS", "4"), scent), false),
                                         CustomItem.MakeItem(new ItemStack(Material.DIAMOND_ORE), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "DIAMOND", "5"), scent), false))
-                                .collect(Collectors.toList());
+                                .toList();
 
                         contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> oreLocate(Material.COAL_ORE, p, scent, 0)));
                         contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> oreLocate(Material.IRON_ORE, p, scent, 2)));

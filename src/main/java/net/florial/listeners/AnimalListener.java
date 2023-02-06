@@ -19,6 +19,9 @@ public class AnimalListener implements Listener {
 
     @EventHandler
     public void passiveSpawn(CreatureSpawnEvent e) {
+
+        if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) return;
+
         EntityType ent = e.getEntityType();
         if (!List.of(EntityType.SHEEP, EntityType.COW, EntityType.CHICKEN, EntityType.PIG, EntityType.RABBIT).contains(ent))
             return;

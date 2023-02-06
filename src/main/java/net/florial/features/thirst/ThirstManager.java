@@ -12,8 +12,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-
 public class ThirstManager implements Listener {
 
 
@@ -28,8 +26,7 @@ public class ThirstManager implements Listener {
 
     @EventHandler
     public void DehydrateSelf(FoodLevelChangeEvent event) {
-        if (!(event.getEntity() instanceof Player) || (!(event.getEntity().getFoodLevel() > event.getFoodLevel()))) return;
-        Player p = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player p) || (!(event.getEntity().getFoodLevel() > event.getFoodLevel()))) return;
         if (getThirst(p) > 0) {
             deHydrate(p, 1);
         } else {
@@ -44,20 +41,20 @@ public class ThirstManager implements Listener {
         int fullThirst = thirst / 2;
         int halfThirst = thirst % 2;
 
-        String thirstdisplay = "";
+        StringBuilder thirstdisplay = new StringBuilder();
 
-        for (int i = 0; i < fullThirst; i++) {thirstdisplay += "\uE236";}
+        thirstdisplay.append("\uE236".repeat(Math.max(0, fullThirst)));
 
-        if (halfThirst == 1) thirstdisplay += "\uE237";
+        if (halfThirst == 1) thirstdisplay.append("\uE237");
 
-        for (int i = 0; i < (10 - fullThirst - halfThirst); i++) {thirstdisplay += "\uE330";}
+        thirstdisplay.append("\uE330".repeat(Math.max(0, (10 - fullThirst - halfThirst))));
 
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("                     "+thirstdisplay));
     }
 
     public void thirstRunnable(Player p){
 
-        if (Florial.getThirst().get(p.getUniqueId()) == null) Florial.getThirst().put(p.getUniqueId(), 20);
+        Florial.getThirst().putIfAbsent(p.getUniqueId(), 20);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Florial.getInstance(), () -> {
             if (!p.isOnline()) return;
@@ -70,7 +67,7 @@ public class ThirstManager implements Listener {
         return Florial.getThirst().get(p.getUniqueId());
     }
 
-    private void Hydrate(Player p, Integer amount){
+    private void Hydrate(Player p, int amount){
         Florial.getThirst().put(p.getUniqueId(), getThirst(p) + amount);
 
         if (getThirst(p) == 20)
@@ -78,7 +75,7 @@ public class ThirstManager implements Listener {
                     6000, 1, false, false, true));
     }
 
-    private void deHydrate(Player p, Integer amount){
+    private void deHydrate(Player p, int amount){
         Florial.getThirst().put(p.getUniqueId(), getThirst(p) - amount);
     }
 
