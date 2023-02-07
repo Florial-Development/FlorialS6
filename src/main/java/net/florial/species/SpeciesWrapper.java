@@ -2,6 +2,7 @@ package net.florial.species;
 
 import net.florial.Florial;
 import net.florial.models.PlayerData;
+import net.florial.species.disguises.Morph;
 import net.florial.species.events.impl.SpeciesSwitchEvent;
 import org.bukkit.Bukkit;
 
@@ -23,6 +24,8 @@ public class SpeciesWrapper {
         if (event.isCancelled()) return;
 
         data.setSpecieId(species.getId());
+
+        Morph.activate(Bukkit.getPlayer(player), "" + species, "", false);
 
         data.getSpecies().effects().forEach(effect -> {
             data.getPlayer().removePotionEffect(effect.getType());

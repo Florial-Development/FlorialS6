@@ -49,7 +49,7 @@ public class ThirstManager implements Listener {
 
         thirstdisplay.append("\uE330".repeat(Math.max(0, (10 - fullThirst - halfThirst))));
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("                     "+thirstdisplay));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("                                                         "+thirstdisplay));
     }
 
     public void thirstRunnable(Player p){
