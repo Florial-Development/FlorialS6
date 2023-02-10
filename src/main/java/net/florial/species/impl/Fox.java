@@ -17,7 +17,7 @@ import java.util.Set;
 public class Fox extends Species {
     
     public Fox(int id) {
-        super("Fox", id);
+        super("Fox", id, 14);
 
         Bukkit.getPluginManager().registerEvents(this, Florial.getInstance());
 
@@ -34,10 +34,8 @@ public class Fox extends Species {
 
     @Override
     public Set<String> descriptions() {
-        Set<String> descriptions = new HashSet<>(Arrays.asList(
-                ""));
-
-        return descriptions;
+        return new HashSet<>(Arrays.asList(
+                "", ""));
     }
     
 }

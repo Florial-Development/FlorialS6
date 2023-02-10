@@ -26,11 +26,12 @@ public abstract class Species implements Listener {
     
     String name;
     int id;
-    double maxHealth = 20d;
+    double maxHealth;
     
-    protected Species(String name, int id) {
+    protected Species(String name, int id, double maxHealth) {
         this.name = name;
         this.id = id;
+        this.maxHealth = maxHealth;
 
         Bukkit.getPluginManager().registerEvents(this, Florial.getInstance());
 

@@ -13,6 +13,7 @@ import net.florial.features.enemies.impl.Crawlies;
 import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
 import net.florial.features.skills.SkillsCommand;
+import net.florial.features.skills.attack.AttackSkillListener;
 import net.florial.features.thirst.ThirstManager;
 import net.florial.listeners.*;
 import net.florial.models.PlayerData;
@@ -91,12 +92,14 @@ public final class Florial extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AnimalListener(), this);
 
 
+
         getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
         getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
         getServer().getPluginManager().registerEvents(new Wisps(EntityType.WITCH), this);
         getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
 
         getServer().getPluginManager().registerEvents(new ChocolateEatListener(), this);
+        getServer().getPluginManager().registerEvents(new AttackSkillListener(), this);
 
         SpecieType.getAllSpecies().forEach(species -> {
             if (species == null) return;

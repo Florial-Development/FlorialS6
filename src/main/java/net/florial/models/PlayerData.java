@@ -7,6 +7,7 @@ import lombok.Data;
 import net.florial.Florial;
 import net.florial.database.FlorialDatabase;
 import net.florial.features.skills.Skill;
+import net.florial.features.upgrades.Upgrade;
 import net.florial.species.SpecieType;
 import net.florial.species.Species;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
@@ -38,7 +39,9 @@ public class PlayerData {
 
     HashMap<Skill, Integer> skills = new HashMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
 
-    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, int event) {
+    HashMap<Upgrade, Boolean> upgrades = new HashMap<>();
+
+    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, HashMap<Upgrade,Boolean> upgrades, int event) {
 
         this.UUID = uuid;
         this.flories = flories;
@@ -47,6 +50,7 @@ public class PlayerData {
         this.specieId = specieId;
         this.pronouns = pronouns;
         this.skills = skills;
+        this.upgrades = upgrades;
         this.event = event;
     }
 

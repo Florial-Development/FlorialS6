@@ -15,15 +15,26 @@ import net.florial.species.events.impl.SpeciesRespawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Cat extends Species {
     
     public Cat(int id) {
-        super("Cat", id);
+        super("Cat", id, 12);
     }
     
     @EventHandler
     public void onRespawn(SpeciesRespawnEvent event) {
         event.getPlayer().sendMessage("A cat has respawned!");
+    }
+
+    @Override
+    public Set<String> descriptions() {
+
+        return new HashSet<>(Arrays.asList(
+                "", ""));
     }
 
     @EventHandler

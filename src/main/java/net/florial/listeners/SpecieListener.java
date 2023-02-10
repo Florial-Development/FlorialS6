@@ -1,7 +1,9 @@
 package net.florial.listeners;
 
 import net.florial.Florial;
+import net.florial.Refresh;
 import net.florial.models.PlayerData;
+import net.florial.utils.GeneralUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,8 +12,14 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import net.florial.species.events.impl.SpeciesDeathEvent;
 import net.florial.species.events.impl.SpeciesKillEvent;
 import net.florial.species.events.impl.SpeciesRespawnEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 public class SpecieListener implements Listener {
+
+    Florial florial = Florial.getInstance();
+    net.florial.Refresh Refresh = new Refresh();
     
     @EventHandler
     private void onRespawn(PlayerRespawnEvent event) {
@@ -25,6 +33,11 @@ public class SpecieListener implements Listener {
         );
 
         data.refresh();
+
+        GeneralUtils.runAsync(
+                (BukkitRunnable) Bukkit.getScheduler().runTaskLater(florial, () -> {
+                    Refresh.load(event.getPlayer(), data);
+                }, 20L));
 
         Bukkit.getPluginManager().callEvent(e);
     }
