@@ -1,7 +1,9 @@
 package net.florial.species;
 
 import net.florial.Florial;
+import net.florial.database.FlorialDatabase;
 import net.florial.models.PlayerData;
+import net.florial.species.disguises.Morph;
 import net.florial.species.events.impl.SpeciesSwitchEvent;
 import org.bukkit.Bukkit;
 
@@ -10,20 +12,38 @@ import java.util.UUID;
 public class SpeciesWrapper {
 
     public static void setSpecies(UUID player, SpecieType species) {
-        PlayerData data = Florial.getPlayerData().get(player);
+
+        final PlayerData[] data = new PlayerData[1];
+        try {
+            data[0] = Florial.getPlayerData().get(player);
+        } catch (Exception e) {
+            FlorialDatabase.getPlayerData(player).thenAccept(playerData -> {
+                    Florial.getPlayerData().put(player, playerData);
+                    data[0] = playerData;
+                }
+            );
+        }
+
 
         SpeciesSwitchEvent event = new SpeciesSwitchEvent(
             Bukkit.getPlayer(player),
-            data,
-            data.getSpecieType(),
+                data[0],
+            data[0].getSpecieType(),
             species
         );
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) return;
 
-        data.setSpecieId(species.getId());
+        data[0].getSpecies().effects().forEach(effect -> {
+            data[0].getPlayer().removePotionEffect(effect.getType());
+        data[0].setSpecieId(species.getId());
 
+        Morph.activate(Bukkit.getPlayer(player), "" + species, "", false);
+
+        data[0].setSpecieId(species.getId());
+        data[0].refresh();
+    });
     }
 
     // Method to get the species of a player

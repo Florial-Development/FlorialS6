@@ -39,9 +39,10 @@ public class PlayerData {
     private int event = 0;
     @Nullable
     String pronouns = "";
+    @Nullable
+    String prefix = "";
 
     HashMap<Skill, Integer> skills = new HashMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
-
     HashMap<Upgrade, Boolean> upgrades = new HashMap<>();
 
     public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, HashMap<Upgrade,Boolean> upgrades, int event) {
@@ -55,6 +56,7 @@ public class PlayerData {
         this.skills = skills;
         this.upgrades = upgrades;
         this.event = event;
+        this.prefix = prefix;
     }
 
     public PlayerData(String uuid) {
@@ -124,6 +126,11 @@ public class PlayerData {
         dnaXP = 0;
         dna = dna+1;
 
+    }
+
+    public void overwrite() {
+        if (Bukkit.getPlayer(UUID) == null) return;
+        Florial.getPlayerData().put(Bukkit.getPlayer(UUID).getUniqueId(), this);
     }
 
 }

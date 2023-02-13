@@ -139,6 +139,9 @@ public class FlorialDatabase {
 
     }
 
+    public static CompletableFuture<List<String>> sortDataByField(String field, boolean descending) {
+        return sortDataByField(field, descending, 10);
+    }
     public static void fetchBoard(String field, boolean descending, Consumer<List<String>> callback){
         sortDataByField(field, descending, 10).thenAccept(callback);
     }

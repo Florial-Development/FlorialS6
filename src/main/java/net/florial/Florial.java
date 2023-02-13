@@ -1,6 +1,8 @@
 package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -25,24 +27,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public final class Florial extends JavaPlugin {
 
     public static Florial getInstance() {
         return getPlugin(Florial.class);
     }
-
-    @Getter
-    private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
-
+    @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
     @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
+    @Getter private static final HashMap<UUID, EntityType> entityLink = new HashMap<>();
 
 
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
+
+    @Getter
+    private ProtocolManager protocol;
 
     private static final ThirstManager ThirstManager = new ThirstManager();
 
@@ -70,19 +71,9 @@ public final class Florial extends JavaPlugin {
     private void init(){
         saveDefaultConfig();
         setupCommands();
-        setupListeners();
-        loadData();
-    }
+        protocol = ProtocolLibrary.getProtocolManager();
+        manager.invoke();
 
-    private void loadData(){
-        if (!(Bukkit.getOnlinePlayers().size() > -1)) return;
-        for (Player p : Bukkit.getOnlinePlayers()) {FlorialDatabase.getPlayerData(p.getUniqueId()).thenAccept(playerData -> {
-            Florial.getPlayerData().put(p.getUniqueId(), playerData);});
-            ThirstManager.thirstRunnable(p);}
-
-    }
-
-    private void setupListeners(){
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
@@ -92,10 +83,9 @@ public final class Florial extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AnimalListener(), this);
 
 
-
         getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
         getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
-        getServer().getPluginManager().registerEvents(new Wisps(EntityType.WITCH), this);
+        getServer().getPluginManager().registerEvents(new Wisps(EntityType.VEX), this);
         getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
 
         getServer().getPluginManager().registerEvents(new ChocolateEatListener(), this);

@@ -1,15 +1,32 @@
 package net.florial.listeners;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import com.destroystokyo.paper.block.TargetBlockInfo;
+import com.destroystokyo.paper.entity.TargetEntityInfo;
+import com.mongodb.client.model.Filters;
 import net.florial.features.thirst.ThirstManager;
 import net.florial.Florial;
 import net.florial.database.FlorialDatabase;
 import net.florial.models.PlayerData;
+import net.florial.utils.Message;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.florial.utils.GeneralUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,6 +45,25 @@ public class PlayerListeners implements Listener {
         FlorialDatabase.getPlayerData(p).thenAccept(playerData -> Florial.getPlayerData().put(u, playerData));
 
         GeneralUtils.runAsync((BukkitRunnable) Bukkit.getScheduler().runTaskLater(florial, Florial.getPlayerData().get(u)::refresh, 20L));
+        FlorialDatabase.getPlayerData(p).thenAccept(playerData -> {
+           p.sendMessage(Component.text(playerData.toString()));
+           Florial.getPlayerData().put(p.getUniqueId(), playerData);
+           new BukkitRunnable() {
+               @Override
+               public void run() {
+                   p.sendMessage(Component.text(playerData.getSpecieId()));
+                   switch (playerData.getSpecieId()) {
+                       case 1 -> {
+                           Florial.getEntityLink().put(event.getPlayer().getUniqueId(), EntityType.CAT);
+                       }
+                       default -> {
+                           Florial.getEntityLink().put(event.getPlayer().getUniqueId(), null);
+                       }
+                   }
+               }
+           }.runTask(Florial.getInstance());
+            new Message("&a[MONGO] &fYour data has been loaded successfully").send(p);
+        });
 
         ThirstManager.thirstRunnable(p);
 
