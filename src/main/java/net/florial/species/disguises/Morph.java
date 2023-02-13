@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 public class Morph {
 
-    /*
+    /**
     positions:
     sitting
     sleeping

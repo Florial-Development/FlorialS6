@@ -5,6 +5,7 @@ import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import lombok.Data;
 import net.florial.Florial;
+import net.florial.Refresh;
 import net.florial.database.FlorialDatabase;
 import net.florial.features.skills.Skill;
 import net.florial.features.upgrades.Upgrade;
@@ -23,6 +24,8 @@ import java.util.Map;
 @Data
 @Entity("playerdata")
 public class PlayerData {
+
+    private static final Refresh Refresh = new Refresh();
 
     @Id
     private ObjectId _id = new ObjectId();
@@ -87,6 +90,8 @@ public class PlayerData {
         Bukkit.getScheduler().runTaskLater(Florial.getInstance(), () -> {
             for (PotionEffect effect : getSpecies().effects()) {
             getPlayer().addPotionEffect(effect);}}, 70L);
+
+        Refresh.load(getPlayer(), this);
 
     }
 

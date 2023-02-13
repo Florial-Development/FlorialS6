@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpecieListener implements Listener {
 
     Florial florial = Florial.getInstance();
-    net.florial.Refresh Refresh = new Refresh();
-    
+
     @EventHandler
     private void onRespawn(PlayerRespawnEvent event) {
         PlayerData data = Florial.getPlayerData().get(event.getPlayer().getUniqueId());
@@ -32,12 +31,7 @@ public class SpecieListener implements Listener {
             data.getSpecieType()
         );
 
-        data.refresh();
-
-        GeneralUtils.runAsync(
-                (BukkitRunnable) Bukkit.getScheduler().runTaskLater(florial, () -> {
-                    Refresh.load(event.getPlayer(), data);
-                }, 20L));
+        GeneralUtils.runAsync((BukkitRunnable) Bukkit.getScheduler().runTaskLater(florial, data::refresh, 20L));
 
         Bukkit.getPluginManager().callEvent(e);
     }

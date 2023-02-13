@@ -2,11 +2,9 @@ package net.florial.species;
 
 import net.florial.Florial;
 import net.florial.models.PlayerData;
-import net.florial.species.disguises.Morph;
 import net.florial.species.events.impl.SpeciesSwitchEvent;
 import org.bukkit.Bukkit;
 
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class SpeciesWrapper {
@@ -20,18 +18,11 @@ public class SpeciesWrapper {
             data.getSpecieType(),
             species
         );
+        Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) return;
 
         data.setSpecieId(species.getId());
-
-        Morph.activate(Bukkit.getPlayer(player), "" + species, "", false);
-
-        data.getSpecies().effects().forEach(effect -> {
-            data.getPlayer().removePotionEffect(effect.getType());
-        });
-
-        data.refresh();
 
     }
 

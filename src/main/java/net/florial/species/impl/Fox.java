@@ -9,10 +9,7 @@ import net.florial.species.events.impl.SpeciesRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Fox extends Species {
     
@@ -26,10 +23,9 @@ public class Fox extends Species {
 
     @Override
     public Set<PotionEffect> effects() {
-        Set<PotionEffect> effects = new HashSet<>(Arrays.asList(
-                new PotionEffect(PotionEffectType.FAST_DIGGING, 1000000, 1, false, false, true)));
 
-        return effects;
+        return new HashSet<>(List.of(
+                new PotionEffect(PotionEffectType.FAST_DIGGING, 1000000, 1, false, false, true)));
     }
 
     @Override

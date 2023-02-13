@@ -14,9 +14,6 @@ import java.util.List;
 
 public class AnimalListener implements Listener {
 
-    GetChance GetChance = new GetChance();
-
-
     @EventHandler
     public void passiveSpawn(CreatureSpawnEvent e) {
 
