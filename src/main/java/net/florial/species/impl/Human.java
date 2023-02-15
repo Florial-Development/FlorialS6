@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 public class Human extends Species {
     
     public Human(int id) {
-        super("Human", id, 20);
+        super("Human", id, 20, false);
     }
     
     @EventHandler

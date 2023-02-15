@@ -44,26 +44,8 @@ public class PlayerListeners implements Listener {
 
         FlorialDatabase.getPlayerData(p).thenAccept(playerData -> Florial.getPlayerData().put(u, playerData));
 
-        GeneralUtils.runAsync((BukkitRunnable) Bukkit.getScheduler().runTaskLater(florial, Florial.getPlayerData().get(u)::refresh, 20L));
-        FlorialDatabase.getPlayerData(p).thenAccept(playerData -> {
-           p.sendMessage(Component.text(playerData.toString()));
-           Florial.getPlayerData().put(p.getUniqueId(), playerData);
-           new BukkitRunnable() {
-               @Override
-               public void run() {
-                   p.sendMessage(Component.text(playerData.getSpecieId()));
-                   switch (playerData.getSpecieId()) {
-                       case 1 -> {
-                           Florial.getEntityLink().put(event.getPlayer().getUniqueId(), EntityType.CAT);
-                       }
-                       default -> {
-                           Florial.getEntityLink().put(event.getPlayer().getUniqueId(), null);
-                       }
-                   }
-               }
-           }.runTask(Florial.getInstance());
-            new Message("&a[MONGO] &fYour data has been loaded successfully").send(p);
-        });
+        GeneralUtils.runAsync(new BukkitRunnable() {@Override public void run() {Bukkit.getScheduler().runTaskLater(florial, Florial.getPlayerData().get(u)::refresh, 40L);}});
+
 
         ThirstManager.thirstRunnable(p);
 

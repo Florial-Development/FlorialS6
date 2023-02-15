@@ -24,7 +24,6 @@ public class SpeciesWrapper {
             );
         }
 
-
         SpeciesSwitchEvent event = new SpeciesSwitchEvent(
             Bukkit.getPlayer(player),
                 data[0],
@@ -33,17 +32,7 @@ public class SpeciesWrapper {
         );
         Bukkit.getPluginManager().callEvent(event);
 
-        if (event.isCancelled()) return;
 
-        data[0].getSpecies().effects().forEach(effect -> {
-            data[0].getPlayer().removePotionEffect(effect.getType());
-        data[0].setSpecieId(species.getId());
-
-        Morph.activate(Bukkit.getPlayer(player), "" + species, "", false);
-
-        data[0].setSpecieId(species.getId());
-        data[0].refresh();
-    });
     }
 
     // Method to get the species of a player

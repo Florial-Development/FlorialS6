@@ -3,6 +3,7 @@ package net.florial.models;
 import com.mongodb.lang.Nullable;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import lombok.Data;
 import net.florial.Florial;
 import net.florial.Refresh;
@@ -11,10 +12,13 @@ import net.florial.features.skills.Skill;
 import net.florial.features.upgrades.Upgrade;
 import net.florial.species.SpecieType;
 import net.florial.species.Species;
+import net.florial.utils.CustomItem;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.Field;
@@ -45,7 +49,7 @@ public class PlayerData {
     HashMap<Skill, Integer> skills = new HashMap<>(Map.of(Skill.SCENT,1, Skill.RESISTANCE,1, Skill.STRENGTH,1, Skill.SURVIVAL,1, Skill.SPECIFIC,1));
     HashMap<Upgrade, Boolean> upgrades = new HashMap<>();
 
-    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, HashMap<Upgrade,Boolean> upgrades, int event) {
+    public PlayerData(String uuid, int flories, int dna, int dnaXP, int specieId, @org.jetbrains.annotations.Nullable String pronouns, HashMap<Skill,Integer> skills, HashMap<Upgrade,Boolean> upgrades, int event, String prefix) {
 
         this.UUID = uuid;
         this.flories = flories;
@@ -92,6 +96,8 @@ public class PlayerData {
         Bukkit.getScheduler().runTaskLater(Florial.getInstance(), () -> {
             for (PotionEffect effect : getSpecies().effects()) {
             getPlayer().addPotionEffect(effect);}}, 70L);
+
+        if (getSpecies().isCanSmell()) getPlayer().getInventory().setItem(8, NBTEditor.set(CustomItem.MakeItem(new ItemStack(Material.PAPER), "#6A3A2F&lSCENT [CLICK]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳#ffa2c4 Right-Click to smell Entity\n #ffa2c4&l︳#ffa2c4 Left-Click to Track Food\n  #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), 1, "CustomModelData"));
 
         Refresh.load(getPlayer(), this);
 

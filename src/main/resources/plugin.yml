@@ -2,7 +2,7 @@ name: Florial
 version: '1.0'
 main: net.florial.Florial
 api-version: 1.19
-authors: [ Rosa, Tulip ]
+authors: [ Rosa, Reassembly ]
 description: Florial server core
 depend:
   - ProtocolLib

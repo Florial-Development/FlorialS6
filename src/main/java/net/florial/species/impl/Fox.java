@@ -14,7 +14,7 @@ import java.util.*;
 public class Fox extends Species {
     
     public Fox(int id) {
-        super("Fox", id, 14);
+        super("Fox", id, 14, true);
 
         Bukkit.getPluginManager().registerEvents(this, Florial.getInstance());
 

@@ -1,6 +1,5 @@
 package net.florial.features.skills.scent;
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import io.github.rysefoxx.inventory.plugin.content.IntelligentItem;
 import io.github.rysefoxx.inventory.plugin.content.InventoryContents;
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider;
@@ -9,7 +8,6 @@ import net.florial.Florial;
 import net.florial.features.skills.Skill;
 import net.florial.models.PlayerData;
 import net.florial.utils.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -22,8 +20,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AnimalTrackingUI {
@@ -55,7 +51,7 @@ public class AnimalTrackingUI {
                                                     "HARE", "Plains, Deserts, Forests, Snowy", "4"), scent), false),
                                             CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzljMjI4ZDc4ZTM5NTUwMGJjNTRlOGU0NWU5ODExYWY4YzllYTU4MDQ1ZDcyZmE2ZjA5OTIxZGE1N2UwNTViNCJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                     "HOG", "Forests, Jungle", "5"), scent), false))
-                                .collect(Collectors.toList());
+                                .toList();
 
                         contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> trackDown(EntityType.COW, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
                                         Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 0)));

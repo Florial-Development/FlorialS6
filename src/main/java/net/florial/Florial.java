@@ -1,8 +1,6 @@
 package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -16,6 +14,7 @@ import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
 import net.florial.features.skills.SkillsCommand;
 import net.florial.features.skills.attack.AttackSkillListener;
+import net.florial.features.skills.scent.ScentListener;
 import net.florial.features.thirst.ThirstManager;
 import net.florial.listeners.*;
 import net.florial.models.PlayerData;
@@ -27,7 +26,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public final class Florial extends JavaPlugin {
 
@@ -36,14 +37,9 @@ public final class Florial extends JavaPlugin {
     }
     @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
     @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
-    @Getter private static final HashMap<UUID, EntityType> entityLink = new HashMap<>();
-
 
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
-
-    @Getter
-    private ProtocolManager protocol;
 
     private static final ThirstManager ThirstManager = new ThirstManager();
 
@@ -71,7 +67,6 @@ public final class Florial extends JavaPlugin {
     private void init(){
         saveDefaultConfig();
         setupCommands();
-        protocol = ProtocolLibrary.getProtocolManager();
         manager.invoke();
 
 
@@ -85,16 +80,22 @@ public final class Florial extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Boar(EntityType.HOGLIN), this);
         getServer().getPluginManager().registerEvents(new Snapper(EntityType.RAVAGER), this);
-        getServer().getPluginManager().registerEvents(new Wisps(EntityType.VEX), this);
+        getServer().getPluginManager().registerEvents(new Wisps(EntityType.WITCH), this);
         getServer().getPluginManager().registerEvents(new Crawlies(EntityType.CAVE_SPIDER), this);
 
         getServer().getPluginManager().registerEvents(new ChocolateEatListener(), this);
         getServer().getPluginManager().registerEvents(new AttackSkillListener(), this);
+        //getServer().getPluginManager().registerEvents(new ScentListener(), this);
 
         SpecieType.getAllSpecies().forEach(species -> {
             if (species == null) return;
             getServer().getPluginManager().registerEvents(species, this);
         });
+
+        if (!(Bukkit.getOnlinePlayers().size() > 0)) return;
+        for (Player p : Bukkit.getOnlinePlayers()) {FlorialDatabase.getPlayerData(p.getUniqueId()).thenAccept(playerData -> {
+            Florial.getPlayerData().put(p.getUniqueId(), playerData);});
+            ThirstManager.thirstRunnable(p);}
 
     }
 

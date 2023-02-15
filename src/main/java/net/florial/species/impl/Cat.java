@@ -22,7 +22,7 @@ import java.util.Set;
 public class Cat extends Species {
     
     public Cat(int id) {
-        super("Cat", id, 12);
+        super("Cat", id, 12, true);
     }
     
     @EventHandler
