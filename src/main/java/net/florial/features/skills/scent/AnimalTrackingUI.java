@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AnimalTrackingUI {
@@ -42,26 +43,26 @@ public class AnimalTrackingUI {
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_BREATH, 1, 1);
 
                         List<ItemStack> entries = Stream.of(CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDI3MmVmYmE5NGQzZWM3OWQyM2M3ODkyNjk2NzQ5MTEyNWM5YTEwM2VlZDAwZDM2MDJlOTg0MTk1NTBlNTViYyJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                                    "COW", "Plains, Snowy", "1"), scent), false),
-                                            CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0NGZiOGEwODA1N2U0YTcyNzhhNmM1YWEyY2I2OTJmMmU3Y2ZlYTk2MGM2OGZjMGQ0ZDJlMjZlODhkZDM1OSJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                                    "SHEEP", "Plains, Snowy", "2"), scent), false),
-                                            CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjVkYzhjNDkxZjE3ZTgyZTNlZTA3NWYwOWZiZGVhOTdlZGY2ZDNlN2RiMWU0YmI4YjIwMDFhODBkNzlhNWIxZiJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                                    "WILD CHICKEN", "Plains, Forests, Jungle", "3"), scent), false),
-                                            CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2M0MzQ5ZmU5OTAyZGQ3NmMxMzYxZjhkNmExZjc5YmZmNmY0MzNmM2I3YjE4YTQ3MDU4ZjBhYTE2YjkwNTNmIn19fQ"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                                    "HARE", "Plains, Deserts, Forests, Snowy", "4"), scent), false),
-                                            CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzljMjI4ZDc4ZTM5NTUwMGJjNTRlOGU0NWU5ODExYWY4YzllYTU4MDQ1ZDcyZmE2ZjA5OTIxZGE1N2UwNTViNCJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
-                                                    "HOG", "Forests, Jungle", "5"), scent), false))
+                                                "COW", "Plains, Snowy", "1"), scent), false),
+                                        CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I0NGZiOGEwODA1N2U0YTcyNzhhNmM1YWEyY2I2OTJmMmU3Y2ZlYTk2MGM2OGZjMGQ0ZDJlMjZlODhkZDM1OSJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "SHEEP", "Plains, Snowy", "2"), scent), false),
+                                        CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjVkYzhjNDkxZjE3ZTgyZTNlZTA3NWYwOWZiZGVhOTdlZGY2ZDNlN2RiMWU0YmI4YjIwMDFhODBkNzlhNWIxZiJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "WILD CHICKEN", "Plains, Forests, Jungle", "3"), scent), false),
+                                        CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2M0MzQ5ZmU5OTAyZGQ3NmMxMzYxZjhkNmExZjc5YmZmNmY0MzNmM2I3YjE4YTQ3MDU4ZjBhYTE2YjkwNTNmIn19fQ"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "HARE", "Plains, Deserts, Forests, Snowy", "4"), scent), false),
+                                        CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzljMjI4ZDc4ZTM5NTUwMGJjNTRlOGU0NWU5ODExYWY4YzllYTU4MDQ1ZDcyZmE2ZjA5OTIxZGE1N2UwNTViNCJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
+                                                "HOG", "Forests, Jungle", "5"), scent), false))
                                 .toList();
 
                         contents.set(List.of(27), IntelligentItem.of(entries.get(0), event -> trackDown(EntityType.COW, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
-                                        Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 0)));
+                                Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 0)));
                         contents.set(List.of(28), IntelligentItem.of(entries.get(1), event -> trackDown(EntityType.SHEEP, List.of(Biome.PLAINS,Biome.SNOWY_PLAINS,
                                 Biome.SUNFLOWER_PLAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_SLOPES), p, scent, 2)));
                         contents.set(List.of(29), IntelligentItem.of(entries.get(2), event -> trackDown(EntityType.CHICKEN, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
                                 Biome.SUNFLOWER_PLAINS,Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST), p, scent, 3)));
                         contents.set(List.of(30), IntelligentItem.of(entries.get(3), event -> trackDown(EntityType.RABBIT, List.of(Biome.PLAINS,Biome.FLOWER_FOREST,
                                 Biome.SUNFLOWER_PLAINS,Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST,Biome.DESERT,Biome.SNOWY_PLAINS,
-                        Biome.SNOWY_SLOPES,Biome.SNOWY_TAIGA), p, scent, 4)));
+                                Biome.SNOWY_SLOPES,Biome.SNOWY_TAIGA), p, scent, 4)));
                         contents.set(List.of(31), IntelligentItem.of(entries.get(4), event -> trackDown(EntityType.PIG, List.of(Biome.FLOWER_FOREST,
                                 Biome.BIRCH_FOREST,Biome.DARK_FOREST,Biome.JUNGLE,Biome.SPARSE_JUNGLE,Biome.BAMBOO_JUNGLE,Biome.FOREST,Biome.DESERT), p, scent, 5)));
 

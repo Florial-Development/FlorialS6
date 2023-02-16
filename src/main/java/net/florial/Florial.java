@@ -14,7 +14,7 @@ import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
 import net.florial.features.skills.SkillsCommand;
 import net.florial.features.skills.attack.AttackSkillListener;
-import net.florial.features.skills.scent.ScentListener;
+import net.florial.features.skills.scent.ScentManager;
 import net.florial.features.thirst.ThirstManager;
 import net.florial.listeners.*;
 import net.florial.models.PlayerData;
@@ -69,6 +69,8 @@ public final class Florial extends JavaPlugin {
         setupCommands();
         manager.invoke();
 
+        Bukkit.broadcastMessage("confirm");
+
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
@@ -85,7 +87,7 @@ public final class Florial extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ChocolateEatListener(), this);
         getServer().getPluginManager().registerEvents(new AttackSkillListener(), this);
-        //getServer().getPluginManager().registerEvents(new ScentListener(), this);
+        getServer().getPluginManager().registerEvents(new ScentManager(), this);
 
         SpecieType.getAllSpecies().forEach(species -> {
             if (species == null) return;

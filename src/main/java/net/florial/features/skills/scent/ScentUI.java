@@ -8,17 +8,23 @@ import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
+import net.florial.utils.GeneralUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 public class ScentUI {
 
-    private static final AnimalTrackingUI animaltrackingUI = new AnimalTrackingUI();
+    private static final AnimalTrackingUI trackingUI = new AnimalTrackingUI();
     private static final OreTrackingUI oretrackingUI = new OreTrackingUI();
+
+    private static final Florial florial = Florial.getInstance();
+
 
     public void scentUI(Player p) {
 
@@ -33,9 +39,9 @@ public class ScentUI {
                                 .toList();
 
 
-                        contents.set(List.of(37, 38, 28, 29), IntelligentItem.of(entries.get(0), event -> animaltrackingUI.trackingUI(p)));
+                        contents.set(List.of(37, 38, 28, 29), IntelligentItem.of(entries.get(0), event -> loadMenu(p, 1)));
 
-                        contents.set(List.of(32, 33, 41, 42, 43, 34), IntelligentItem.of(entries.get(1), event -> oretrackingUI.trackingUIOre(p)));
+                        contents.set(List.of(32, 33, 41, 42, 43, 34), IntelligentItem.of(entries.get(1), event -> loadMenu(p, 2)));
 
 
                     }
@@ -43,6 +49,19 @@ public class ScentUI {
                 .build(Florial.getInstance())
                 .openAll();
 
+    }
+
+    private static void loadMenu(Player p, int type) {
+        switch(type) {
+        case 1:
+            p.closeInventory();
+            trackingUI.trackingUI(p);
+            break;
+        case 2:
+            p.closeInventory();
+            oretrackingUI.trackingUIOre(p);
+            break;
+        }
     }
 }
 
