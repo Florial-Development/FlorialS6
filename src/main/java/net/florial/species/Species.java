@@ -6,24 +6,22 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import net.florial.Florial;
-import net.florial.features.enemies.events.MobSpawnEvent;
 import net.florial.models.PlayerData;
 import net.florial.species.disguises.Morph;
-import net.florial.species.events.impl.SpeciesRespawnEvent;
 import net.florial.species.events.impl.SpeciesSwitchEvent;
 import net.florial.utils.GeneralUtils;
-import net.florial.utils.MobSpawn;
+import net.florial.utils.NumberGenerator;
 import org.bukkit.Bukkit;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -33,6 +31,16 @@ import java.util.Set;
 public abstract class Species implements Listener {
 
     private static final Florial florial = Florial.getInstance();
+    private static final Map<Material, Integer> fillingValues = Map.ofEntries(
+            Map.entry(Material.CHICKEN, 20),
+            Map.entry(Material.PORKCHOP, 15),
+            Map.entry(Material.BEEF, 20),
+            Map.entry(Material.SWEET_BERRIES, 10),
+            Map.entry(Material.COD, 13),
+            Map.entry(Material.SALMON, 13),
+            Map.entry(Material.MUTTON, 20)
+    );
+
 
 
     String name;
@@ -56,7 +64,7 @@ public abstract class Species implements Listener {
         return new HashSet<>();
     }
 
-    public Set<ItemStack> diet() {
+    public Set<Material> diet() {
         return new HashSet<>();
     }
 
@@ -78,5 +86,29 @@ public abstract class Species implements Listener {
         GeneralUtils.runAsync(new BukkitRunnable() {@Override public void run() {Bukkit.getScheduler().runTaskLater(florial, data::refresh, 40L);}});
 
     }
-    
+
+    @EventHandler
+    public void whenIEat(PlayerItemConsumeEvent event) {
+
+
+        Player p = event.getPlayer();
+
+        PlayerData data = Florial.getPlayerData().get(p.getUniqueId());
+
+        if (data.getSpecies() != this) return;
+
+        Material mat = event.getItem().getType();
+
+        event.setCancelled(true);
+
+        if (this.diet().contains(mat)) {
+            p.setFoodLevel(p.getFoodLevel() + fillingValues.get(mat));
+            if (!(p.getSaturation() >= 20)) p.setSaturation(p.getSaturation() + fillingValues.get(mat)/2);
+        } else {
+            p.setFoodLevel(p.getFoodLevel() + 1);
+        }
+
+    }
+
+
 }

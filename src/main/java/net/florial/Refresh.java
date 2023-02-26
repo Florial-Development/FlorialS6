@@ -3,6 +3,7 @@ package net.florial;
 import net.florial.features.skills.Skill;
 import net.florial.features.upgrades.Upgrade;
 import net.florial.models.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -28,6 +29,7 @@ public class Refresh {
     public void load(Player p, PlayerData data) {
 
         if (data == null) data = Florial.getPlayerData().get(p.getUniqueId());
+
 
         // now additions shall be.. have we anything to add to the max health?
         int additions = 0;

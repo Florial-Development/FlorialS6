@@ -24,11 +24,6 @@ public class Cat extends Species {
     public Cat(int id) {
         super("Cat", id, 12, true);
     }
-    
-    @EventHandler
-    public void onRespawn(SpeciesRespawnEvent event) {
-        event.getPlayer().sendMessage("A cat has respawned!");
-    }
 
     @Override
     public Set<String> descriptions() {

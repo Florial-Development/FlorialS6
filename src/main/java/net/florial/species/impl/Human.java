@@ -10,10 +10,6 @@ public class Human extends Species {
     public Human(int id) {
         super("Human", id, 20, false);
     }
-    
-    @EventHandler
-    public void onRespawn(SpeciesRespawnEvent event) {
-        event.getPlayer().sendMessage("A human has respawned!");
-    }
+
     
 }

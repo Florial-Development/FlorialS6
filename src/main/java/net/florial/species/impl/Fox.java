@@ -1,15 +1,16 @@
 package net.florial.species.impl;
 
 import net.florial.Florial;
-import net.florial.species.SpecieType;
 import net.florial.species.Species;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import net.florial.species.events.impl.SpeciesRespawnEvent;
+import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Fox extends Species {
     
@@ -32,6 +33,15 @@ public class Fox extends Species {
     public Set<String> descriptions() {
         return new HashSet<>(Arrays.asList(
                 "", ""));
+    }
+
+    @Override
+    public Set<Material> diet() {
+        return new HashSet<>(Arrays.asList(
+                Material.BEEF, Material.PORKCHOP,
+                Material.CHICKEN, Material.MUTTON,
+                Material.SWEET_BERRIES, Material.COD,
+                Material.SALMON, Material.GLOW_BERRIES));
     }
     
 }

@@ -95,7 +95,7 @@ public class PlayerData {
 
         Bukkit.getScheduler().runTaskLater(Florial.getInstance(), () -> {
             for (PotionEffect effect : getSpecies().effects()) {
-            getPlayer().addPotionEffect(effect);}}, 70L);
+                getPlayer().addPotionEffect(effect);}}, 70L);
 
         if (getSpecies().isCanSmell()) getPlayer().getInventory().setItem(8, NBTEditor.set(CustomItem.MakeItem(new ItemStack(Material.PAPER), "#6A3A2F&lSCENT [CLICK]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳#ffa2c4 Right-Click to smell Entity\n #ffa2c4&l︳#ffa2c4 Left-Click to Track Food\n  #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), 1, "CustomModelData"));
 
