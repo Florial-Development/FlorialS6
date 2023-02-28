@@ -29,8 +29,6 @@ import java.util.Map;
 @Entity("playerdata")
 public class PlayerData {
 
-    private static final Refresh Refresh = new Refresh();
-
     @Id
     private ObjectId _id = new ObjectId();
 
@@ -128,7 +126,7 @@ public class PlayerData {
 
     @BsonIgnore
     private void DnaLVLup(){
-        if (!(dnaXP > 499)) return;
+        if (dnaXP <= 500) return;
         dnaXP = 0;
         dna = dna+1;
 

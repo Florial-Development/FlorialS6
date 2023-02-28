@@ -147,7 +147,7 @@ public final class Florial extends JavaPlugin {
 
     }
 
-    public PlayerData getPlayerData(Player player) {return playerData.get(player);}
+    public PlayerData getPlayerData(Player player) {return playerData.get(player.getUniqueId());}
 
     public static HashMap<UUID, Integer> getThirst(){return thirst;}
 }

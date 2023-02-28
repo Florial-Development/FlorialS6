@@ -26,10 +26,7 @@ public class Refresh {
     therefore our responsibility to load that too in the off-case it is somehow lost
      */
 
-    public void load(Player p, PlayerData data) {
-
-        if (data == null) data = Florial.getPlayerData().get(p.getUniqueId());
-
+    public static void load(Player p, PlayerData data) {
 
         // now additions shall be.. have we anything to add to the max health?
         int additions = 0;
@@ -69,5 +66,9 @@ public class Refresh {
 
       //  if (!(upgrades.isEmpty()) && upgrades.get(Upgrade.DOUBLEHEALTH)) maxhealth.set(Math.max(maxhealth.get(), 20));
 
+    }
+
+    public static void load(Player player) {
+        load(player, Florial.getInstance().getPlayerData(player));
     }
 }
