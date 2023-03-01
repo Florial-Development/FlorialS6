@@ -13,16 +13,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import net.florial.species.events.impl.SpeciesRespawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Cat extends Species {
     
     public Cat(int id) {
-        super("Cat", id, 12, true);
+        super("Cat", id, 14, true);
+    }
+
+    @Override
+    public Set<PotionEffect> effects() {
+
+        return new HashSet<>(List.of(
+                new PotionEffect(PotionEffectType.SPEED, 1000000, 0, false, false, true),
+                new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 1, false, false, true)));
     }
 
     @Override
@@ -30,6 +41,15 @@ public class Cat extends Species {
 
         return new HashSet<>(Arrays.asList(
                 "", ""));
+    }
+
+    @Override
+    public Set<Material> diet() {
+        return new HashSet<>(Arrays.asList(
+                Material.BEEF, Material.PORKCHOP,
+                Material.CHICKEN, Material.MUTTON,
+                Material.TROPICAL_FISH, Material.COD,
+                Material.SALMON));
     }
 
     @EventHandler

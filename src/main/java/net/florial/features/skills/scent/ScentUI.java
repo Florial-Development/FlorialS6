@@ -8,12 +8,10 @@ import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
-import net.florial.utils.GeneralUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -52,13 +50,13 @@ public class ScentUI {
     }
 
     private static void loadMenu(Player p, int type) {
+        p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1);
+        p.closeInventory();
         switch(type) {
         case 1:
-            p.closeInventory();
             trackingUI.trackingUI(p);
             break;
         case 2:
-            p.closeInventory();
             oretrackingUI.trackingUIOre(p);
             break;
         }

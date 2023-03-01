@@ -5,6 +5,7 @@ import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.florial.commands.*;
+import net.florial.commands.species.SpeciesCommand;
 import net.florial.database.FlorialDatabase;
 import net.florial.features.chocolates.ChocolateEatListener;
 import net.florial.features.chocolates.ChocolateerCommand;
@@ -137,6 +138,7 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
+        manager.registerCommand(new SpeciesCommand());
         manager.registerCommand(new ChangeFlories());
         manager.registerCommand(new LeaderboardCommand());
         manager.registerCommand(new ShowScentUICommand());

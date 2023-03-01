@@ -6,6 +6,7 @@ import io.github.rysefoxx.inventory.plugin.content.InventoryContents;
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider;
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
+import net.florial.menus.Species;
 import net.florial.models.PlayerData;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
@@ -17,12 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Skills {
 
-    // work in progress
+    final private static Species Species = new Species();
 
     public void skillMenu(Player p) {
 
@@ -61,7 +61,7 @@ public class Skills {
                                                 "" + descriptions.get(1))), false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .toList();
 
-                       // contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p,0,data,Skill.SPECIFIC)));
+                        contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> backButton(p)));
 
                         contents.set(List.of(18,19), IntelligentItem.of(entries.get(0), event -> skill(p,25,data,Skill.SCENT)));
 
@@ -78,6 +78,15 @@ public class Skills {
                 .build(Florial.getInstance())
                 .openAll();
 
+    }
+
+    private static void backButton(Player p) {
+
+        p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_STEP, 1, 1);
+
+        p.closeInventory();
+
+        Species.speciesMenu(p);
     }
 
     private static void skill(Player p, int i, PlayerData data, Skill skill) {

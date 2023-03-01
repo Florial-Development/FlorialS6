@@ -90,12 +90,13 @@ public abstract class Species implements Listener {
     @EventHandler
     public void whenIEat(PlayerItemConsumeEvent event) {
 
-
         Player p = event.getPlayer();
 
         PlayerData data = Florial.getPlayerData().get(p.getUniqueId());
 
         if (data.getSpecies() != this) return;
+
+        if (data.getSpecies().diet() == null) return;
 
         Material mat = event.getItem().getType();
 

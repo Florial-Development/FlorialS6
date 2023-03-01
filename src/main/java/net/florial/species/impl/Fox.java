@@ -15,7 +15,7 @@ import java.util.Set;
 public class Fox extends Species {
     
     public Fox(int id) {
-        super("Fox", id, 14, true);
+        super("Fox", id, 16, true);
 
         Bukkit.getPluginManager().registerEvents(this, Florial.getInstance());
 
@@ -26,13 +26,14 @@ public class Fox extends Species {
     public Set<PotionEffect> effects() {
 
         return new HashSet<>(List.of(
-                new PotionEffect(PotionEffectType.FAST_DIGGING, 1000000, 1, false, false, true)));
+                new PotionEffect(PotionEffectType.SPEED, 1000000, 1, false, false, true),
+                new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 1, false, false, true)));
     }
 
     @Override
     public Set<String> descriptions() {
         return new HashSet<>(Arrays.asList(
-                "", ""));
+                "BURROWING", "Haste, double materials, etc"));
     }
 
     @Override
