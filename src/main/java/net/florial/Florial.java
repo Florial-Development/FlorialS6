@@ -20,6 +20,7 @@ import net.florial.features.thirst.ThirstManager;
 import net.florial.listeners.*;
 import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
+import net.florial.utils.Cooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -70,9 +71,6 @@ public final class Florial extends JavaPlugin {
         setupCommands();
         manager.invoke();
 
-        Bukkit.broadcastMessage("confirm");
-
-
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
         getServer().getPluginManager().registerEvents(new ThirstListener(), this);
@@ -99,6 +97,13 @@ public final class Florial extends JavaPlugin {
         for (Player p : Bukkit.getOnlinePlayers()) {FlorialDatabase.getPlayerData(p.getUniqueId()).thenAccept(playerData -> {
             Florial.getPlayerData().put(p.getUniqueId(), playerData);});
             ThirstManager.thirstRunnable(p);}
+
+        if (!(Cooldown.getCooldownMap("c1") == null)) Cooldown.getCooldownMap("c1").clear();
+        if (!(Cooldown.getCooldownMap("c2") == null)) Cooldown.getCooldownMap("c2").clear();
+        if (!(Cooldown.getCooldownMap("scent") == null)) Cooldown.getCooldownMap("scent").clear();
+        if (Cooldown.getCooldownMap("c1") == null) Cooldown.createCooldown("c1");
+        if (Cooldown.getCooldownMap("c2") == null) Cooldown.createCooldown("c2");
+        if (Cooldown.getCooldownMap("scent") == null) Cooldown.createCooldown("scent");
 
     }
 

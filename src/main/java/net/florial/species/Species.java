@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +60,12 @@ public abstract class Species implements Listener {
 
 
     }
-    
+
+    public Map<Integer, PotionEffect> specific() {
+        return new HashMap<>();
+    }
+
+
     public Set<PotionEffect> effects() {
         return new HashSet<>();
     }
@@ -94,9 +100,7 @@ public abstract class Species implements Listener {
 
         PlayerData data = Florial.getPlayerData().get(p.getUniqueId());
 
-        if (data.getSpecies() != this) return;
-
-        if (data.getSpecies().diet() == null) return;
+        if (data.getSpecies() != this || data.getSpecies().diet() == null) return;
 
         Material mat = event.getItem().getType();
 

@@ -37,7 +37,9 @@ public enum SpecieType {
     BASILISK(19, null),
     NEKORYU(20, null),
     WINDOWSIAN(21, null),
-    VOIDBORN(22, null);
+    VOIDBORN(22, null),
+    WHITETAILDRAGON(23, null);
+
 
     //end
 

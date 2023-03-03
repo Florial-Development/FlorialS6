@@ -36,6 +36,7 @@ public class Refresh {
         HashMap<Upgrade, Boolean> upgrades = data.getUpgrades() != null ? data.getUpgrades() : new HashMap<>();
         int resistance = skills.get(Skill.RESISTANCE);
         int survival = skills.get(Skill.SURVIVAL);
+        int specific = skills.get(Skill.SPECIFIC);
 
         // let's see if the user has upgraded resistance?
         if (resistance > 1) p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, resistance-2, false, false, true));
@@ -46,6 +47,14 @@ public class Refresh {
         if (survival > 4) additions = survival >= 20 ? 6 : 4;
 
         if (survival > 14) p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 1000000, 0, false, false, true));
+
+        //let's loop through their specie's unique skill set and apply all necessary effects
+        for (Map.Entry<Integer, PotionEffect> entry : data.getSpecies().specific().entrySet()) {
+
+            boolean applicable = specific >= entry.getKey() && p.addPotionEffect(entry.getValue());
+
+            if (!(applicable)) break;
+        }
 
         // let's set their maxhealth now
         p.setMaxHealth(maxhealth.get() + additions);
@@ -63,9 +72,8 @@ public class Refresh {
                 handler.run();
             }
         }
-
-      //  if (!(upgrades.isEmpty()) && upgrades.get(Upgrade.DOUBLEHEALTH)) maxhealth.set(Math.max(maxhealth.get(), 20));
-
+        //this runs twice for the aforementioned reasons.. let's see if we can get this down to running once in some way!
+        p.setMaxHealth(maxhealth.get() + additions);
     }
 
     public static void load(Player player) {

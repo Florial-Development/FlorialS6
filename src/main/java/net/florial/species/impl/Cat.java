@@ -1,6 +1,7 @@
 package net.florial.species.impl;
 
-import net.florial.species.SpecieType;
+import net.florial.Florial;
+import net.florial.models.PlayerData;
 import net.florial.species.Species;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import net.florial.species.events.impl.SpeciesRespawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -55,6 +55,11 @@ public class Cat extends Species {
     @EventHandler
     public void onPlayerAttack(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker) {
+
+            PlayerData data = Florial.getPlayerData().get(attacker.getUniqueId());
+
+            if (data.getSpecies() != this) return;
+
             if (attacker.getInventory().getItemInMainHand().getType() == Material.AIR) {
 
                 Bukkit.broadcast(Component.text("Called"));

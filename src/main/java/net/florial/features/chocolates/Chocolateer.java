@@ -48,8 +48,8 @@ public class Chocolateer {
                                                 new ItemStack(Material.COCOA_BEANS, 32)),
                                         player, CustomItem.MakeItem(new ItemStack(Material.MUSIC_DISC_WAIT), "#6A3A2F&lChocolate Malt", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Use this to Make Chocolate.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false))));
 
-                        contents.set(List.of(39,40,41), IntelligentItem.of(entries.get(1), event -> chocolateering(List.of(entries.get(0),
-                                                entries.get(2)),
+                        contents.set(List.of(39,40,41), IntelligentItem.of(entries.get(1), event -> chocolateering(List.of(new ItemStack(Material.MUSIC_DISC_11),
+                                        new ItemStack(Material.MUSIC_DISC_WAIT)),
                                         player, output)));
                     }
                 })
