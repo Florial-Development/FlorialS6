@@ -30,19 +30,19 @@ public class Chocolateer {
                     @Override
                     public void init(Player player, InventoryContents contents) {
 
-                        List<ItemStack> entries = Stream.of(CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE MALT\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x15#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Cocoa Beans\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE CHOCOLATE\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x1#ffa2c4 Filling\n #ffa2c4&l︳ • x1#ffa2c4 Malt\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false),
-                                CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE FILLING\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x15#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x16#ffa2c4 Sweet Berries\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
+                        List<ItemStack> entries = Stream.of(CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE MALT\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x5#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Cocoa Beans\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE CHOCOLATE\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x1#ffa2c4 Filling\n #ffa2c4&l︳ • x1#ffa2c4 Malt\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false),
+                                CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", " #ff79a1&l︳ MAKE FILLING\n #ffa2c4&l︳ REQUIREMENTS:\n #ffa2c4&l︳ • x5#ffa2c4 Milk\n #ffa2c4&l︳ • x32#ffa2c4 Eggs\n #ffa2c4&l︳ • x64#ffa2c4 Sugar\n #ffa2c4&l︳ • x16#ffa2c4 Sweet Berries\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .collect(Collectors.toList());
 
                         final ItemStack output = NBTEditor.set(CustomItem.MakeItem(new ItemStack(Material.COOKIE), "#6A3A2F&lChocolate [EAT]", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Eat it and get DNA XP.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false), 1, "Chocolate");
 
-                        contents.set(List.of(27,28,29), IntelligentItem.of(entries.get(2), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 15),
+                        contents.set(List.of(27,28,29), IntelligentItem.of(entries.get(2), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 5),
                                                 new ItemStack(Material.EGG, 32),
                                                 new ItemStack(Material.SUGAR, 64),
                                                 new ItemStack(Material.SWEET_BERRIES, 16)),
                                         player, CustomItem.MakeItem(new ItemStack(Material.MUSIC_DISC_11), "#FAE4DF&lFilling", "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑\n #ffa2c4&l︳ Use this to Make Chocolate.\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false))));
 
-                        contents.set(List.of(33,34,35), IntelligentItem.of(entries.get(0), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 15),
+                        contents.set(List.of(33,34,35), IntelligentItem.of(entries.get(0), event -> chocolateering(List.of(new ItemStack(Material.MILK_BUCKET, 5),
                                                 new ItemStack(Material.EGG, 32),
                                                 new ItemStack(Material.SUGAR, 64),
                                                 new ItemStack(Material.COCOA_BEANS, 32)),
@@ -73,6 +73,8 @@ public class Chocolateer {
             p.getInventory().addItem(output);
             p.playSound(p.getLocation(), Sound.BLOCK_MUD_BREAK, 1, 3);
             p.getInventory().removeItem(necessities.toArray(new ItemStack[necessities.size()]));
+
+            p.setFoodLevel(p.getFoodLevel() - 2);
         }
 
     }

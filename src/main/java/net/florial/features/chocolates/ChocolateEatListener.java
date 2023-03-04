@@ -24,5 +24,7 @@ public class ChocolateEatListener implements Listener {
         p.playSound(p.getLocation(), Sound.BLOCK_MUD_BREAK, 1, 4);
         p.playSound(p.getLocation(), Sound.BLOCK_SCAFFOLDING_BREAK, 1, 2);
 
+        p.setFoodLevel(p.getFoodLevel() - 1);
+
     }
 }

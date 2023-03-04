@@ -21,11 +21,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Species {
+public class SpeciesMenu {
 
     //work in progress
     final net.florial.utils.GetCustomSkull GetCustomSkull = new GetCustomSkull();
     private static final Skills Skills = new Skills();
+
+    private static final PrestigeMenu PrestigeMenu = new PrestigeMenu();
 
     public void speciesMenu(Player p) {
 
@@ -39,7 +41,7 @@ public class Species {
                         List<ItemStack> entries = Stream.of(CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑",
                                                 "#ff79a1&lSKILLS\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false),
                                         CustomItem.MakeItem(new ItemStack(Material.MAP), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑",
-                                                "#ff79a1&lBUTTON\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
+                                                "#ff79a1&lPRESTIGE SHOP\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙", false)).map(i -> NBTEditor.set(i, 1010, "CustomModelData"))
                                 .toList();
 
                         List<ItemStack> species = Stream.of(CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkyNGJlNWY3NGI2NDMxNjYwZmQ1YzRjYzAzMzRkOTFlNzdlNzdmZGQ4OGQyNGVhODVlYjBmMzgzODRjN2YxYSJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
@@ -50,7 +52,7 @@ public class Species {
                                                 "#ffa2c4&lBURROWER:#ffa2c4 Upgrade your burrow skill to", "break blocks faster and get more materials",
                                                 "#ffa2c4&lWEAK:#ffa2c4 Live with 7 hearts", "Make the most of it.",
                                                 "#ffa2c4&lCARNIVORE:#ffa2c4 Vegetables aren't all that", "healthy. Except Sweet Berries!",
-                                                "", "", "")), false),
+                                                "", "", "", "")), false),
                                         CustomItem.MakeItem(GetCustomSkull.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2UzZTAzYTk2NzE4NDAyMjNhOTZhOTIwOTE0ZDFiODczMTQwNDRjYzZkMzJhYWI3YzI3ZTFmNjQwZWNjMjFkNSJ9fX0"), "#ff79a1&l ┍━━━━━━━━━━━━━━━━━━┑", format(List.of(
                                                 "#ffa2c4&lCAT", "#ffa2c4&lNINE LIVES:#ffa2c4 Bounce back when close to death.", "Has a cooldown.",
                                                 "#ffa2c4&lSCRATCH:#ffa2c4 Hit with an empty hand to", "scratch nearby entities in a radius.",
@@ -59,16 +61,14 @@ public class Species {
                                                 "#ffa2c4&lQUICKFEET:#ffa2c4 Land on your feet.", "No fall damage! + Speed I.",
                                                 "#ffa2c4&lSMALL:#ffa2c4 Live with 6 hearts", "Make the most of it.",
                                                 "#ffa2c4&lCARNIVORE:#ffa2c4 Vegetables aren't all that", "healthy.",
-                                                "", "", "")), false)).toList();
+                                                "", "", "", "")), false)).toList();
 
-
-
-                        // contents.set(List.of(36,37), IntelligentItem.of(entries.get(0), event -> skill(p,0,data,Skill.SPECIFIC)));
 
                         contents.set(List.of(21), IntelligentItem.of(species.get(0), event -> switchSpecies(p, "FOX")));
 
                         contents.set(List.of(23), IntelligentItem.of(species.get(1), event -> switchSpecies(p, "CAT")));
 
+                        //skills
                         contents.set(List.of(5, 4, 3), IntelligentItem.of(entries.get(0), event -> loadMenu(p, 1)));
 
                         //prestige
@@ -93,7 +93,7 @@ public class Species {
                 Skills.skillMenu(p);
                 break;
             case 2:
-                //prestige
+                PrestigeMenu.prestigeMenu(p);
                 break;
         }
     }
@@ -124,20 +124,20 @@ public class Species {
                 + iterations.get(3) + "\n#ffa2c4 "
                 + iterations.get(4) + "\n #ffa2c4&l︳ •  #ffa2c4 "
                 + iterations.get(5) + "\n#ffa2c4 "
-                + "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙\n"
+                + iterations.get(6) + "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙\n"
                 + "#ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(6) + "\n#ffa2c4 "
-                + iterations.get(7) + "\n #ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(8) + "\n#ffa2c4 "
-                + iterations.get(9) + "\n #ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(10) + "\n#ffa2c4 "
-                + iterations.get(11) + "\n #ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(12) + "\n#ffa2c4 "
-                + iterations.get(13) + "\n #ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(14) + "\n#ffa2c4 "
-                + iterations.get(15) + "\n #ffa2c4&l︳ • #ffa2c4 "
-                + iterations.get(16) + "\n#ffa2c4 "
-                + iterations.get(17) + "\n #ffa2c4&l︳ • [CLICK HERE]" +
+                + iterations.get(7) + "\n#ffa2c4 "
+                + iterations.get(8) + "\n #ffa2c4&l︳ • #ffa2c4 "
+                + iterations.get(9) + "\n#ffa2c4 "
+                + iterations.get(10) + "\n #ffa2c4&l︳ • #ffa2c4 "
+                + iterations.get(11) + "\n#ffa2c4 "
+                + iterations.get(12) + "\n #ffa2c4&l︳ • #ffa2c4 "
+                + iterations.get(13) + "\n#ffa2c4 "
+                + iterations.get(14) + "\n #ffa2c4&l︳ • #ffa2c4 "
+                + iterations.get(15) + "\n#ffa2c4 "
+                + iterations.get(16) + "\n #ffa2c4&l︳ • #ffa2c4 "
+                + iterations.get(17) + "\n#ffa2c4 "
+                + iterations.get(18) + "\n #ffa2c4&l︳ • [CLICK HERE]" +
                 "\n #ff79a1&l┕━━━━━━━━━━━━━━━━━━┙";}
 
 }

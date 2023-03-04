@@ -6,7 +6,7 @@ import io.github.rysefoxx.inventory.plugin.content.InventoryContents;
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider;
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory;
 import net.florial.Florial;
-import net.florial.menus.Species;
+import net.florial.menus.SpeciesMenu;
 import net.florial.models.PlayerData;
 import net.florial.utils.CC;
 import net.florial.utils.CustomItem;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 public class Skills {
 
-    final private static Species Species = new Species();
+    final private static SpeciesMenu Species = new SpeciesMenu();
 
     public void skillMenu(Player p) {
 

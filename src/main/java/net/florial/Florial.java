@@ -5,6 +5,7 @@ import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.florial.commands.*;
+import net.florial.commands.species.ResetSpeciesCommand;
 import net.florial.commands.species.SpeciesCommand;
 import net.florial.database.FlorialDatabase;
 import net.florial.features.chocolates.ChocolateEatListener;
@@ -13,7 +14,6 @@ import net.florial.features.enemies.impl.Boar;
 import net.florial.features.enemies.impl.Crawlies;
 import net.florial.features.enemies.impl.Snapper;
 import net.florial.features.enemies.impl.Wisps;
-import net.florial.features.skills.SkillsCommand;
 import net.florial.features.skills.attack.AttackSkillListener;
 import net.florial.features.skills.scent.ScentManager;
 import net.florial.features.thirst.ThirstManager;
@@ -143,14 +143,14 @@ public final class Florial extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new SpeciesCheckCommand());
         manager.registerCommand(new ChangeSpeciesCommand());
+        manager.registerCommand(new ResetSpeciesCommand());
         manager.registerCommand(new SpeciesCommand());
-        manager.registerCommand(new ChangeFlories());
+        manager.registerCommand(new ChangeDNACommand());
         manager.registerCommand(new LeaderboardCommand());
         manager.registerCommand(new ShowScentUICommand());
         manager.registerCommand(new ChangeSkillsCommand());
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());
-        manager.registerCommand(new SkillsCommand());
 
     }
 

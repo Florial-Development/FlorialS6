@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -59,6 +60,14 @@ public abstract class Species implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Florial.getInstance());
 
 
+    }
+
+    /*
+    1 = no fall dmg
+    2 = flight
+     */
+    public Map<Integer, Boolean> sharedAbilities() {
+        return new HashMap<>();
     }
 
     public Map<Integer, PotionEffect> specific() {
@@ -112,6 +121,19 @@ public abstract class Species implements Listener {
         } else {
             p.setFoodLevel(p.getFoodLevel() + 1);
         }
+
+    }
+
+    @EventHandler
+    public void noFallDamage(EntityDamageEvent e) {
+
+        if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
+
+        if ((!(e.getEntity() instanceof Player p))) return;
+
+        if (!(Florial.getPlayerData().get(p.getUniqueId()).getSpecies().sharedAbilities().get(0))) return;
+
+        e.setCancelled(true);
 
     }
 
