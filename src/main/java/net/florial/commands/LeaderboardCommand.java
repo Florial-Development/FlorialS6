@@ -3,9 +3,10 @@ package net.florial.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
+import me.santio.utils.bukkit.impl.MessageUtils;
+import me.santio.utils.minecraft.message.Message;
 import net.florial.database.FlorialDatabase;
 import net.florial.models.PlayerData;
-import net.florial.utils.Message;
 import org.bukkit.entity.Player;
 
 public class LeaderboardCommand extends BaseCommand {
@@ -23,7 +24,7 @@ public class LeaderboardCommand extends BaseCommand {
                 for (String it : res) {
                     msg.add(new Message("&7" + iteration + ": &d" + it));
                 }
-                msg.send(player);
+                MessageUtils.sendMessage(player, msg);
             });
 
 

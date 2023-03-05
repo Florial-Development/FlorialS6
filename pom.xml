@@ -193,5 +193,21 @@
             <artifactId>morphia-core</artifactId>
             <version>2.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.SantioMC.SantioUtils</groupId>
+            <artifactId>minecraft</artifactId>
+            <version>8e990f36d2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.SantioMC.SantioUtils</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>8e990f36d2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

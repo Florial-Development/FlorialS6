@@ -15,11 +15,6 @@ public class Message {
         component = Component.text(tacc(msg)).asComponent();
     }
 
-    public Message add(Message msg) {
-        component = component.append(Component.text(tacc(msg.component.toString())));
-        return this;
-    }
-
     public Message showOnHover(String msg) {
         component = component.hoverEvent(HoverEvent.showText(Component.text(tacc(msg)).asComponent()));
         return this;

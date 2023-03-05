@@ -14,8 +14,10 @@ import dev.morphia.query.filters.Filters;
 import lombok.Getter;
 import lombok.val;
 import net.florial.Florial;
+import net.florial.models.FilterEntry;
 import net.florial.models.PlayerData;
 import net.florial.utils.GeneralUtils;
+import net.kyori.adventure.text.Component;
 import org.bson.UuidRepresentation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -59,6 +61,7 @@ public class FlorialDatabase {
         database = mongo.getDatabase(Florial.getInstance().getConfig().getString("mongo.database"));
         datastore = Morphia.createDatastore(mongo, Florial.getInstance().getConfig().getString("mongo.database"));
         datastore.getMapper().map(PlayerData.class);
+        datastore.getMapper().map(FilterEntry.class);
         datastore.ensureIndexes();
     }
 
@@ -76,6 +79,7 @@ public class FlorialDatabase {
             @Override
             public void run() {
                 val temp = datastore.find(PlayerData.class).filter(Filters.eq("UUID", uuid.toString()));
+                Bukkit.broadcast(Component.text(temp.stream().count()));
                 future.complete(temp.stream().findFirst().orElse(new PlayerData(uuid.toString())));
             }
         });

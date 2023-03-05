@@ -5,6 +5,8 @@ import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.florial.Florial;
 import net.florial.Refresh;
 import net.florial.database.FlorialDatabase;
@@ -32,7 +34,9 @@ public class PlayerData {
     @Id
     private ObjectId _id = new ObjectId();
 
+    @Getter
     private String UUID;
+    @Getter @Setter
     private int flories = 0;
     private int dna = 0;
     private int dnaXP = 0;

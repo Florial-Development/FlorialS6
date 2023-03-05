@@ -21,11 +21,16 @@ import net.florial.listeners.*;
 import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
 import net.florial.utils.Cooldown;
+import net.luckperms.api.LuckPerms;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -43,6 +48,11 @@ public final class Florial extends JavaPlugin {
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
 
+    @Getter
+    private Economy economy = null;
+    @Getter
+    private LuckPerms lpapi = null;
+
     private static final ThirstManager ThirstManager = new ThirstManager();
 
 
@@ -56,6 +66,18 @@ public final class Florial extends JavaPlugin {
 
         FlorialDatabase.initializeDatabase();
         enableRecipes();
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            throw new UnknownDependencyException("Vault was not found on this site");
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) throw new NullPointerException("Economy service provider was not found");
+        economy = rsp.getProvider();
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            lpapi = provider.getProvider();
+        } else {
+            throw new NullPointerException("No luckperms found");
+        }
     }
 
 
@@ -70,6 +92,9 @@ public final class Florial extends JavaPlugin {
         saveDefaultConfig();
         setupCommands();
         manager.invoke();
+
+        Bukkit.broadcastMessage("confirm");
+
 
         getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
         getServer().getPluginManager().registerEvents(new SpecieListener(), this);
