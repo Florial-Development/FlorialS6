@@ -20,6 +20,15 @@ public class DiscordUser {
     private int exp;
     private int level;
     private int coins;
+    private String mcUUID;
+
+    public DiscordUser(String uuid, int exp, int level, int coins, String mcUUID) {
+        this.uuid = uuid;
+        this.exp = exp;
+        this.level = level;
+        this.coins = coins;
+        this.mcUUID = mcUUID;
+    }
 
     @BsonIgnore
     public void save(boolean async) {
@@ -32,5 +41,15 @@ public class DiscordUser {
             });
         }
         else FlorialDatabase.getDatastore().replace(this, new ReplaceOptions().upsert(true));
+    }
+
+    @BsonIgnore
+    public void createNew() {
+        GeneralUtils.runAsync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                FlorialDatabase.getDatastore().save(this);
+            }
+        });
     }
 }

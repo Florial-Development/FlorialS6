@@ -4,6 +4,10 @@ import co.aikar.commands.PaperCommandManager;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.florial.commands.*;
 import net.florial.commands.species.ResetSpeciesCommand;
 import net.florial.commands.species.SpeciesCommand;
@@ -44,6 +48,8 @@ public final class Florial extends JavaPlugin {
     }
     @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
     @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
+    @Getter
+    private JDA discordBot;
 
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
@@ -177,6 +183,15 @@ public final class Florial extends JavaPlugin {
         manager.registerCommand(new NuzzleCommand());
         manager.registerCommand(new ChocolateerCommand());
 
+    }
+
+    private void initializeDiscord() {
+        try {
+            discordBot = JDABuilder.createDefault(getConfig().getString("discord.token"))
+                    .enableIntents(GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT).setActivity(Activity.of(Activity.ActivityType.WATCHING, "the rosacage", "https://florial.tebex.io/")).build();
+        } catch (Exception e) {
+            throw new RuntimeException("Could not initialize the discord bot, did you forget to add the information to the config file?");
+        }
     }
 
     public PlayerData getPlayerData(Player player) {return playerData.get(player.getUniqueId());}

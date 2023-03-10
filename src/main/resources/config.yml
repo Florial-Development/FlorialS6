@@ -1,3 +1,8 @@
 mongo:
   uri:
   database:
+
+discord:
+  token:
+  serverid:
+  verificationChannel:
