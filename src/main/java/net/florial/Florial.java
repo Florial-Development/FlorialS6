@@ -1,14 +1,20 @@
 package net.florial;
 
 import co.aikar.commands.PaperCommandManager;
+import com.jagrosh.jdautilities.command.CommandClient;
+import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import io.github.rysefoxx.inventory.plugin.pagination.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.florial.commands.*;
+import net.florial.commands.discord.DiscordMuteCommand;
+import net.florial.commands.discord.DiscordUwUCommand;
 import net.florial.commands.species.ResetSpeciesCommand;
 import net.florial.commands.species.SpeciesCommand;
 import net.florial.database.FlorialDatabase;
@@ -26,7 +32,6 @@ import net.florial.models.PlayerData;
 import net.florial.species.SpecieType;
 import net.florial.utils.Cooldown;
 import net.luckperms.api.LuckPerms;
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -39,6 +44,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class Florial extends JavaPlugin {
@@ -48,9 +54,9 @@ public final class Florial extends JavaPlugin {
     }
     @Getter private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
     @Getter private static final HashMap<UUID, Integer> thirst = new HashMap<>();
+    @Getter private static Guild discordServer;
     @Getter
     private JDA discordBot;
-
     @Getter
     private final InventoryManager manager = new InventoryManager(this);
 
@@ -67,7 +73,6 @@ public final class Florial extends JavaPlugin {
     public void onEnable() {
 
         init();
-
         manager.invoke();
 
         FlorialDatabase.initializeDatabase();
@@ -75,6 +80,9 @@ public final class Florial extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             throw new UnknownDependencyException("Vault was not found on this site");
         }
+
+        initializeDiscord();
+
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) throw new NullPointerException("Economy service provider was not found");
         economy = rsp.getProvider();
@@ -89,6 +97,14 @@ public final class Florial extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        discordBot.shutdownNow();
+        while (discordBot.getStatus() != JDA.Status.SHUTDOWN) {
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         for (PlayerData data : playerData.values()) data.save(false);
         FlorialDatabase.closeConnection();
         saveConfig();
@@ -187,11 +203,34 @@ public final class Florial extends JavaPlugin {
 
     private void initializeDiscord() {
         try {
-            discordBot = JDABuilder.createDefault(getConfig().getString("discord.token"))
-                    .enableIntents(GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT).setActivity(Activity.of(Activity.ActivityType.WATCHING, "the rosacage", "https://florial.tebex.io/")).build();
+            CommandClientBuilder builder = new CommandClientBuilder();
+            builder.setPrefix("/");
+            builder.forceGuildOnly(getConfig().getString("discord.serverid"));
+            builder.setOwnerId("349819317589901323");
+            builder.setCoOwnerIds("366301720109776899");
+            builder.addSlashCommands(new DiscordUwUCommand(), new DiscordMuteCommand());
+            builder.setHelpWord(null);
+            builder.setActivity(Activity.watching("the RosaCage"));
+            CommandClient commandClient = builder.build();
+            discordBot = JDABuilder.createDefault(getConfig().getString("discord.token"),
+                            GatewayIntent.GUILD_MEMBERS,
+                            GatewayIntent.GUILD_MESSAGES,
+                            GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                            GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
+                    .setActivity(Activity.watching("the rosacage"))
+                    .addEventListeners(commandClient)
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("Could not initialize the discord bot, did you forget to add the information to the config file?");
         }
+
+        if (getConfig().getString("discord.serverid") == null) {
+            throw new RuntimeException("ADD THE DATA YA TURD");
+        }
+//        discordServer = discordBot.getGuildById(Objects.requireNonNull(getConfig().getString("discord.serverid")));
+//        if (discordServer == null) throw new RuntimeException("Could not find discord server from ID, did you forget to add the information to the config file?");
+//        discordServer.updateCommands().addCommands(Commands.slash("uwu", "uwu")).queue();
+
     }
 
     public PlayerData getPlayerData(Player player) {return playerData.get(player.getUniqueId());}

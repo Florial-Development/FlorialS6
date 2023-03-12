@@ -21,6 +21,7 @@ public class SpeciesWrapper {
             FlorialDatabase.getPlayerData(player).thenAccept(playerData -> {
                     Florial.getPlayerData().put(player, playerData);
                     data[0] = playerData;
+                    data[0].save(true);
                 }
             );
         }

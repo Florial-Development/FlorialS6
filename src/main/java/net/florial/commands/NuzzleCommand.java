@@ -13,6 +13,6 @@ public class NuzzleCommand extends BaseCommand {
 
     @Default
     public static void onNuzzle(Player player, @Optional @Flags("other") Player target) {
-         new Message("\n&d" + player.getName() + "&7 nuzzled &d " + target.getName() + "&7!\n").broadcast();
+         new Message("\n&d" + player.getName() + "&7 nuzzled &d" + target.getName() + "&7!\n").broadcast();
     }
 }
